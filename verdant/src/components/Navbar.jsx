@@ -1,0 +1,171 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { ShoppingCart, Menu, X, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const Navbar = ({ cartItemCount = 0 }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  return (
+    <header className="bg-white sticky top-0 z-50 shadow-sm">
+      <div className="container px-4 mx-auto py-4">
+        <div className="flex items-center justify-between">
+          Logo
+          <Link to="/" className="flex items-center">
+            <h1 className="text-emerald-900 font-display text-2xl font-bold">
+              Verdant
+            </h1>
+          </Link>
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link
+              to="/shop"
+              className="text-emerald-700 hover:text-emerald-600 transition-colors"
+            >
+              Shop
+            </Link>
+            <Link
+              to="/categories"
+              className="text-emerald-700 hover:text-emerald-600 transition-colors"
+            >
+              Categories
+            </Link>
+            <Link
+              to="/care-guides"
+              className="text-emerald-700 hover:text-emerald-600 transition-colors"
+            >
+              Care Guides
+            </Link>
+            <Link
+              to="/about"
+              className="text-emerald-700 hover:text-emerald-600 transition-colors"
+            >
+              About
+            </Link>
+          </nav>
+          {/* Search and Cart */}
+          <div className="hidden md:flex items-center space-x-4">
+            <button
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              className="text-emerald-700 hover:text-emerald-600 transition-colors"
+            >
+              <Search size={20} />
+            </button>
+            <Link
+              to="/cart"
+              className="text-emerald-700 hover:text-emerald-600 relative transition-colors"
+            >
+              <ShoppingCart size={20} />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-stone-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
+            </Link>
+            <Link to="/login">
+              <Button
+                variant="outline"
+                className="ml-4 border-emerald-700 text-emerald-600 hover:bg-emerald-100"
+              >
+                Login
+              </Button>
+            </Link>
+          </div>
+          {/* Mobile menu button */}
+          <div className="flex md:hidden items-center space-x-4">
+            <Link
+              to="/cart"
+              className="text-emerald-700 hover:text-emerald-600 relative transition-colors"
+            >
+              <ShoppingCart size={20} />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-stone-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
+            </Link>
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-emerald-700 hover:text-emerald-600 transition-colors"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Search bar - shows when search is clicked */}
+        {isSearchOpen && (
+          <div className="mt-4 pb-4">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search for plants..."
+                className="w-full px-4 py-2 border border-emerald-200 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              />
+              <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-emerald-600">
+                <Search size={20} />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <nav className="md:hidden py-4 bg-amber-50 shadow-inner mt-2 rounded-md">
+            <div className="flex flex-col space-y-4 px-2">
+              <button
+                onClick={() => {
+                  setIsSearchOpen(!isSearchOpen);
+                  setIsMenuOpen(false);
+                }}
+                className="flex items-center text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors w-full"
+              >
+                <Search size={18} className="mr-2" /> Search
+              </button>
+              <Link
+                to="/shop"
+                className="text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Shop
+              </Link>
+              <Link
+                to="/categories"
+                className="text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Categories
+              </Link>
+              <Link
+                to="/care-guides"
+                className="text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Care Guides
+              </Link>
+              <Link
+                to="/about"
+                className="text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </Link>
+              <div className="pt-2 border-t border-emerald-100">
+                <Link
+                  to="/login"
+                  className="flex items-center text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Login / Sign up
+                </Link>
+              </div>
+            </div>
+          </nav>
+        )}
+      </div>
+    </header>
+  );
+};
+
+export default Navbar;
