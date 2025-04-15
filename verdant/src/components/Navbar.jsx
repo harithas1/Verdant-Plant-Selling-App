@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Menu, X, Search, User } from "lucide-react";
+import { ShoppingCart, Menu, X, Search, User, User2, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearch } from "@/hooks/useSearch";
 import SearchResults from "./SearchResults";
@@ -101,9 +101,12 @@ const Navbar = ({ cartItemCount = 0 }) => {
                 </button>
 
                 {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50">
-                    <div className="p-3 border-b text-emerald-800 font-medium">
-                      {(user.name ? user.name : user.email).toUpperCase()}
+                  <div className="absolute border-emerald-800 right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50">
+                    <div className="p-3 flex flex-col gap-4 items-center border-b border-b-emerald-600  text-emerald-800 font-medium">
+                      <UserCircle size={30} />
+                      <span>
+                        {(user.name ? user.name : user.email).toUpperCase()}
+                      </span>
                     </div>
 
                     <button
@@ -111,7 +114,7 @@ const Navbar = ({ cartItemCount = 0 }) => {
                         setUser(null);
                         setIsUserMenuOpen(false);
                       }}
-                      className="block w-full text-left px-4 py-2 text-emerald-700 hover:bg-emerald-100"
+                      className=" w-full px-4 py-2 rounded-b-lg text-red-600 hover:bg-red-600 hover:text-white"
                     >
                       Logout
                     </button>
@@ -218,30 +221,30 @@ const Navbar = ({ cartItemCount = 0 }) => {
                 About
               </Link>
               <div className="pt-2 border-t border-emerald-100">
-                <div className="pt-2 border-t border-emerald-100">
-                  {user ? (
-                    <div className="flex justify-between items-center px-4">
-                      <span className="text-emerald-700">Hi, {user.name}</span>
-                      <button
-                        onClick={() => {
-                          setUser(null);
-                          setIsMenuOpen(false);
-                        }}
-                        className="text-emerald-600 hover:text-red-600"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  ) : (
-                    <Link
-                      to="/auth"
-                      className="flex items-center text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
+                {user ? (
+                  <div className="flex justify-between items-center px-4">
+                    <span className="text-emerald-700">
+                      {user.name ? user.name : user.email}
+                    </span>
+                    <button
+                      onClick={() => {
+                        setUser(null);
+                        setIsMenuOpen(false);
+                      }}
+                      className="text-emerald-600 hover:text-red-600"
                     >
-                      Login / Sign up
-                    </Link>
-                  )}
-                </div>
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    to="/auth"
+                    className="flex items-center text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Login / Sign up
+                  </Link>
+                )}
               </div>
             </div>
           </nav>

@@ -274,7 +274,7 @@ const ProductDetail = () => {
                 {/* Add to Cart & Wishlist */}
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <Button
-                    className={`flex-1 flex items-center justify-center py-4 ${
+                    className={`flex-1 flex items-center  justify-center py-6 ${
                       plant.stock > 0
                         ? "bg-emerald-600 hover:bg-emerald-700"
                         : "bg-muted cursor-not-allowed"

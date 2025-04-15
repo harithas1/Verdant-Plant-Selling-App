@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { plants } from "../data/plants";
 import PlantCard from "../components/PlantCard";
 import { Slider } from "@/components/ui/slider";
-import { Leaf, Droplet, ArrowUpDown, Filter } from "lucide-react";
+import { Leaf, ArrowUpDown, Filter } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -109,23 +109,16 @@ const Shop = () => {
 
   return (
     <div className="bg-amber-50 min-h-screen overflow-x-hidden">
-      <div className="container mx-auto px-4 py-8 overflow-hidden">
-        <section className="flex justify-between place-items-center">
-          <article>
-            <h1 className="text-3xl font-display font-bold text-emerald-800 mb-2">
-              Shop Plants
-            </h1>
-            <p className="text-emerald-600 mb-8">
-              Find the perfect plant for your space
-            </p>
-          </article>
-          <form action="">
-            <input className="border " type="search" name="" id="" />
-          </form>
-        </section>
+      <div className="container px-4 py-8 overflow-hidden">
+        <h1 className="text-3xl font-display font-bold text-emerald-800 mb-2">
+          Shop Plants
+        </h1>
+        <p className="text-emerald-600 mb-8">
+          Find the perfect plant for your space
+        </p>
 
         {/* Mobile filter button and sort dropdown */}
-        <div className="flex flex-row gap-2 justify-between items-center mb-6 md:hidden">
+        <div className="flex text-sm flex-row gap-2 justify-between items-center mb-6 md:hidden">
           <button
             className="flex items-center space-x-2 bg-white px-2 py-2 rounded-md shadow-sm"
             onClick={() => setShowFilters(!showFilters)}
@@ -136,7 +129,7 @@ const Shop = () => {
 
           <div className="relative">
             <select
-              className="appearance-none bg-white pl-2 py-2 rounded-md shadow-sm focus:outline-none"
+              className="bg-white pl-2 py-2 rounded-md shadow-sm focus:outline-none text-sm"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
             >
@@ -146,10 +139,13 @@ const Shop = () => {
               <option value="name-asc">Name: A to Z</option>
               <option value="name-desc">Name: Z to A</option>
             </select>
-            <ArrowUpDown
+            {/* <span className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              ⇅
+            </span> */}
+            {/* <ArrowUpDown
               size={16}
               className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none"
-            />
+            /> */}
           </div>
         </div>
         <div className="flex flex-col md:flex-row gap-6">
@@ -290,7 +286,7 @@ const Shop = () => {
           {/* Main Content */}
           <div className="flex-1">
             {/* Sort options - Desktop */}
-            <div className="hidden md:flex justify-between items-center mb-6">
+            <div className="hidden md:flex justify-evenly items-center mb-6">
               <p className="text-emerald-600">
                 {filteredPlants.length} products
               </p>
@@ -312,7 +308,7 @@ const Shop = () => {
 
             {/* Products Grid */}
             {filteredPlants.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 overflow-hidden">
+              <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 overflow-hidden">
                 {filteredPlants.map((plant) => (
                   <PlantCard key={plant.id} plant={plant} />
                 ))}
