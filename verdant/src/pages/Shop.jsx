@@ -109,7 +109,7 @@ const Shop = () => {
 
   return (
     <div className="bg-amber-50 min-h-screen overflow-x-hidden">
-      <div className="container px-4 py-8 overflow-hidden">
+      <div className="container mx-auto py-8 overflow-hidden">
         <h1 className="text-3xl font-display font-bold text-emerald-800 mb-2">
           Shop Plants
         </h1>

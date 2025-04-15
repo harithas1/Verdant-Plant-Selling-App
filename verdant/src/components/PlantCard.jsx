@@ -31,18 +31,20 @@ const PlantCard = ({ plant }) => {
           </div>
         )}
       </div>
-      <div className="p-4">
+      <div className="p-4 flex flex-col justify-evenly">
         <div className="flex justify-between items-start mb-1">
           <Link to={`/shop/${plant.id}`}>
             <h3 className="font-medium text-emerald-800 hover:text-emerald-600 transition-colors">
               {plant.name}
             </h3>
           </Link>
-          <span className="font-semibold text-emerald-700">
-            ${plant.price.toFixed(2)}
-          </span>
         </div>
-        <p className="text-sm text-emerald-600 mb-3">{plant.category}</p>
+        <div>
+          <p className="text-sm text-emerald-600 ">{plant.category}</p>
+          <p className="font-semibold text-sky-600 my-3">
+            ${plant.price.toFixed(2)}
+          </p>
+        </div>
         {/* <div className="mt-auto flex justify-between items-center"> */}
         {/* <div className="flex items-center bg-amber-100 px-0.5 space-x-1">
             <span className="text-emerald-600 text-xs">{plant.size}</span>
@@ -50,9 +52,9 @@ const PlantCard = ({ plant }) => {
             <span className="text-emerald-600 text-xs">{plant.light}</span>
           </div> */}
         <button
-          className={`text-sm w-full font-medium px-3 py-2 rounded ${
+          className={`text-sm w-full  font-medium px-3 py-2 rounded ${
             plant.stock > 0
-              ? "bg-emerald-600 text-white hover:bg-emerald-700"
+              ? "bg-emerald-600  text-white hover:bg-emerald-700"
               : "bg-muted cursor-not-allowed text-muted-foreground"
           } transition-colors`}
           disabled={plant.stock === 0}
