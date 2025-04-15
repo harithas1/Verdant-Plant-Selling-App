@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Instagram, Facebook, Twitter, Mail } from "lucide-react";
+import vf from "../assets/vf.png";
+
 
 const Footer = () => {
   return (
@@ -9,7 +11,10 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {/* Company info */}
           <div className="col-span-1 md:col-span-1">
-            <h2 className="font-display text-xl font-bold mb-4">Verdant</h2>
+            <h1 className="text-white flex place-items-center font-display text-2xl font-bold">
+              <img className="size-5 text-white" src={vf} alt={vf} />
+              <span>erdant</span>
+            </h1>
             <p className=" mb-4 max-w-xs">
               Bringing nature into your home with high-quality, sustainably
               grown plants.
@@ -114,10 +119,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/faq"
-                  className=" hover:text-white transition-colors"
-                >
+                <Link to="/faq" className=" hover:text-white transition-colors">
                   FAQs
                 </Link>
               </li>
@@ -208,9 +210,7 @@ const Footer = () => {
         <div className="mt-10 pb-10 border-b border-emerald-600">
           <div className="max-w-md mx-auto md:mx-0">
             <h3 className="text-lg font-semibold mb-2">Join our newsletter</h3>
-            <p className=" mb-4">
-              Get plant care tips and exclusive offers
-            </p>
+            <p className=" mb-4">Get plant care tips and exclusive offers</p>
             <div className="flex text-black">
               <input
                 type="email"

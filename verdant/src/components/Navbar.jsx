@@ -1,22 +1,45 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Menu, X, Search } from "lucide-react";
+import { ShoppingCart, Menu, X, Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSearch } from "@/hooks/useSearch";
+import SearchResults from "./SearchResults";
+import logoVerdant from "../assets/logoVerdant.png";
+import v from "../assets/v.png";
+import { useAuth } from "@/context/AuthContext.jsx";
 
 const Navbar = ({ cartItemCount = 0 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { searchResults, searchPlants } = useSearch();
+  const { user, setUser } = useAuth();
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  console.log(user);
+
+  const handleSearchChange = (e) => {
+    searchPlants(e.target.value);
+  };
+
+  const handleSearchClose = () => {
+    setIsSearchOpen(false);
+    searchPlants("");
+  };
 
   return (
     <header className="bg-white sticky top-0 z-50 shadow-sm">
       <div className="container px-4 mx-auto py-4">
         <div className="flex items-center justify-between">
-          Logo
+          {/* Logo */}
           <Link to="/" className="flex items-center">
-            <h1 className="text-emerald-900 font-display text-2xl font-bold">
-              Verdant
+            <img className="h-16 rounded-4xl" src={logoVerdant} alt="" />
+
+            <h1 className="text-emerald-900 flex place-items-center font-display text-2xl font-bold">
+              <img className="size-5" src={v} alt={v} />
+              <span>erdant</span>
             </h1>
           </Link>
+
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
@@ -63,14 +86,48 @@ const Navbar = ({ cartItemCount = 0 }) => {
                 </span>
               )}
             </Link>
-            <Link to="/login">
-              <Button
-                variant="outline"
-                className="ml-4 border-emerald-700 text-emerald-600 hover:bg-emerald-100"
-              >
-                Login
-              </Button>
-            </Link>
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex size-10 justify-center border p-2 rounded-3xl hover:bg-emerald-100 transition"
+                >
+                  {/* <User /> */}
+                  <span className="text-emerald-700 font-semibold">
+                    {(user.name ? user.name : user.email)
+                      .charAt(0)
+                      .toUpperCase()}
+                  </span>
+                </button>
+
+                {isUserMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50">
+                    <div className="p-3 border-b text-emerald-800 font-medium">
+                      {(user.name ? user.name : user.email).toUpperCase()}
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setUser(null);
+                        setIsUserMenuOpen(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-emerald-700 hover:bg-emerald-100"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to="/auth">
+                <Button
+                  variant="outline"
+                  className="ml-4 border-emerald-700 text-emerald-600 hover:bg-emerald-100"
+                >
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
           {/* Mobile menu button */}
           <div className="flex md:hidden items-center space-x-4">
@@ -102,10 +159,19 @@ const Navbar = ({ cartItemCount = 0 }) => {
                 type="text"
                 placeholder="Search for plants..."
                 className="w-full px-4 py-2 border border-emerald-200 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                onChange={handleSearchChange}
+                autoFocus
               />
-              <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-emerald-600">
+              <button
+                onClick={handleSearchClose}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-emerald-600"
+              >
                 <Search size={20} />
               </button>
+              <SearchResults
+                results={searchResults}
+                onSelect={handleSearchClose}
+              />
             </div>
           </div>
         )}
@@ -152,13 +218,30 @@ const Navbar = ({ cartItemCount = 0 }) => {
                 About
               </Link>
               <div className="pt-2 border-t border-emerald-100">
-                <Link
-                  to="/login"
-                  className="flex items-center text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Login / Sign up
-                </Link>
+                <div className="pt-2 border-t border-emerald-100">
+                  {user ? (
+                    <div className="flex justify-between items-center px-4">
+                      <span className="text-emerald-700">Hi, {user.name}</span>
+                      <button
+                        onClick={() => {
+                          setUser(null);
+                          setIsMenuOpen(false);
+                        }}
+                        className="text-emerald-600 hover:text-red-600"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  ) : (
+                    <Link
+                      to="/auth"
+                      className="flex items-center text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Login / Sign up
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
           </nav>

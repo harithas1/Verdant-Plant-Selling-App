@@ -12,7 +12,7 @@ const Home = () => {
   return (
     <div className="min-h-screen overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative h-[92vh] flex items-center bg-emerald-50 overflow-hidden">
+      <section className="relative h-[90vh] flex items-center bg-emerald-50 overflow-hidden">
         <div
           className="absolute inset-0 z-0"
           style={{
@@ -25,7 +25,7 @@ const Home = () => {
         ></div>
         <div className="container mx-auto px-4 z-10">
           <div className="max-w-lg">
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-emerald-900 text-shadow-cyan-400 text-shadow-2xs mb-4">
+            <h1 className="font-display text-6xl md:text-5xl lg:text-6xl font-bold text-emerald-900 text-shadow-cyan-400 text-shadow-2xs mb-4">
               Breathe Life Into Your Space
             </h1>
             <p className="text-emerald-700 text-lg mb-8 max-w-md">

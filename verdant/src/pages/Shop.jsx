@@ -110,12 +110,19 @@ const Shop = () => {
   return (
     <div className="bg-amber-50 min-h-screen overflow-x-hidden">
       <div className="container mx-auto px-4 py-8 overflow-hidden">
-        <h1 className="text-3xl font-display font-bold text-emerald-800 mb-2">
-          Shop Plants
-        </h1>
-        <p className="text-emerald-600 mb-8">
-          Find the perfect plant for your space
-        </p>
+        <section className="flex justify-between place-items-center">
+          <article>
+            <h1 className="text-3xl font-display font-bold text-emerald-800 mb-2">
+              Shop Plants
+            </h1>
+            <p className="text-emerald-600 mb-8">
+              Find the perfect plant for your space
+            </p>
+          </article>
+          <form action="">
+            <input className="border " type="search" name="" id="" />
+          </form>
+        </section>
 
         {/* Mobile filter button and sort dropdown */}
         <div className="flex flex-row gap-2 justify-between items-center mb-6 md:hidden">
@@ -305,7 +312,7 @@ const Shop = () => {
 
             {/* Products Grid */}
             {filteredPlants.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 overflow-hidden">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 overflow-hidden">
                 {filteredPlants.map((plant) => (
                   <PlantCard key={plant.id} plant={plant} />
                 ))}

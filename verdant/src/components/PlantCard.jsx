@@ -44,7 +44,7 @@ const PlantCard = ({ plant }) => {
         </div>
         <p className="text-sm text-emerald-600 mb-3">{plant.category}</p>
         <div className="mt-auto flex justify-between items-center">
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center bg-amber-100 px-0.5 space-x-1">
             <span className="text-emerald-600 text-xs">{plant.size}</span>
             <span className="text-emerald-400">•</span>
             {/* <span className="text-emerald-600 text-xs">{plant.light}</span> */}
