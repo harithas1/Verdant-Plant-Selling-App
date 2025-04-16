@@ -37,11 +37,11 @@ const registerCustomer = async ({ name, email, phone, password }) => {
     { expiresIn: "1d" }
   );
 
-  const verificationLink = `http://localhost:3000/api/auth/verify-email?token=${emailVerificationToken}`;
+  const verificationLink = `http://localhost:3000/api/auth/verify-email?token=₹ {emailVerificationToken}`;
   const emailContent = `
-    <h2>Welcome to Our Store!</h2>
+    <h2>Welcome to Verdant Store!</h2>
     <p>Click the link below to verify your email:</p>
-    <a href="${verificationLink}">Verify Email</a>
+    <a href="₹ {verificationLink}">Verify Email</a>
   `;
 
   await sendEmail(newCustomer.email, "Verify Your Email", emailContent);
@@ -69,10 +69,10 @@ const verifyCustomerEmail = async (token) => {
 
 // Customer Login
 const loginCustomer = async ({ email, password }) => {
-  email = email.toLowerCase();
+  // email = email.toLowerCase();
 
   const customer = await prisma.customer.findUnique({
-    where: { email },
+    where: { email: email.toLowerCase() },
   });
 
   if (!customer) throw new Error("Invalid email or password.");
@@ -92,6 +92,7 @@ const loginCustomer = async ({ email, password }) => {
     where: { id: customer.id },
     data: { lastLogin: new Date() },
   });
+  console.log("login successful");
 
   return { message: "Login successful!", token, customer };
 };
