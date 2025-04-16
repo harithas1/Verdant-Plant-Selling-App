@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id               Int               @id @default(autoincrement())
+  name             String
+  email            String            @unique
+  phone            String            @unique
+  password         String
+  emailVerified    Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  delightSeen      String?
+  lastLogin        DateTime?
+  cartItems        Cart[]
+  customerDelights CustomerDelight[]
+  orders           Order[]
+  reviews          Review[]
+  wishlistItems    Wishlist[]
+}
+
+model Plant {
+  id            Int        @id @default(autoincrement())
+  name          String
+  description   String
+  categoryId    Int
+  price         Float
+  image         String
+  care          String
+  size          Size
+  light         String
+  stock         Int
+  featured      Boolean    @default(false)
+  rating        Float      @default(0.0)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  cartItems     Cart[]
+  orders        Order[]
+  category      Category   @relation(fields: [categoryId], references: [id])
+  reviews       Review[]
+  wishlistItems Wishlist[]
+}
+
+model Category {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  image       String
+  description String
+  plants      Plant[]
+}
+
+model Cart {
+  id        Int      @id @default(autoincrement())
+  custId    Int
+  plantId   Int
+  quantity  Int
+  createdAt DateTime @default(now())
+  customer  Customer @relation(fields: [custId], references: [id])
+  plant     Plant    @relation(fields: [plantId], references: [id])
+}
+
+model Wishlist {
+  id        Int      @id @default(autoincrement())
+  custId    Int
+  plantId   Int
+  createdAt DateTime @default(now())
+  customer  Customer @relation(fields: [custId], references: [id])
+  plant     Plant    @relation(fields: [plantId], references: [id])
+
+  @@unique([custId, plantId])
+}
+
+model Review {
+  id            Int       @id @default(autoincrement())
+  rating        Int
+  comment       String
+  date          DateTime  @default(now())
+  reviewerName  String
+  reviewerEmail String
+  plantId       Int
+  custId        Int?
+  customer      Customer? @relation(fields: [custId], references: [id])
+  plant         Plant     @relation(fields: [plantId], references: [id])
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  custId          Int
+  plantId         Int
+  quantity        Int
+  totalAmount     Float
+  status          OrderStatus
+  shippingAddress String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  customer        Customer    @relation(fields: [custId], references: [id])
+  plant           Plant       @relation(fields: [plantId], references: [id])
+}
+
+model DelightMessage {
+  id               Int               @id @default(autoincrement())
+  title            String
+  message          String
+  image            String?
+  createdAt        DateTime          @default(now())
+  isActive         Boolean           @default(true)
+  customerDelights CustomerDelight[]
+}
+
+model CustomerDelight {
+  id        Int            @id @default(autoincrement())
+  custId    Int
+  messageId Int
+  seenAt    DateTime       @default(now())
+  customer  Customer       @relation(fields: [custId], references: [id])
+  message   DelightMessage @relation(fields: [messageId], references: [id])
+
+  @@unique([custId, messageId])
+}
+
+enum Size {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+enum OrderStatus {
+  PENDING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
