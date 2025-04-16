@@ -33,3 +33,22 @@ const allCategories = async () => {
 
 export const categories = await allCategories()
 
+
+const getAllCartItems = async () => {
+  const user = JSON.parse(localStorage.getItem("user"))
+  console.log(user);
+
+  try {
+    const response = await axios.get(
+      ` http://localhost:3000/cart/getCartItems/${user.id}`
+    );
+    console.log(response.data.cartItems);
+
+    return response.data.cartItems;
+  } catch (err) {
+    console.error("Error fetching plants:", err);
+    return [];
+  }
+};
+
+export const custCartItems = await getAllCartItems();

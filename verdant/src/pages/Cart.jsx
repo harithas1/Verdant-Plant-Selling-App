@@ -12,22 +12,29 @@ import { Button } from "@/components/ui/button";
 import { plants } from "../data/plants";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
+import { custCartItems  } from "../data/plants";
 
 // Mock cart data
-export const initialCartItems = [
-  { id: 1, plantId: 1, quantity: 1 },
-  { id: 2, plantId: 6, quantity: 2 },
-  { id: 3, plantId: 9, quantity: 1 },
-];
+// export const custCartItems = [
+//   { id: 1, plantId: 1, quantity: 1 },
+//   { id: 2, plantId: 2, quantity: 2 },
+//   { id: 3, plantId: 4, quantity: 1 },
+// ];
+// console.log(plants);
+
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState(initialCartItems);
+  console.log(custCartItems);
+  
+  const [cartItems, setCartItems] = useState(custCartItems);
 
   // to get full plant details for cart items
   const cartWithDetails = cartItems.map((item) => {
-    const plant = plants.find((p) => p.id === item.plantId);
+    const plant = plants.find((p) => p.id === item.plant.id);
     return { ...item, plant };
   });
+  // console.log(cartWithDetails);
+  
 
   // to calculate totals
   const subtotal = cartWithDetails.reduce((acc, item) => {
@@ -265,7 +272,7 @@ const Cart = () => {
                       className="text-emerald-600 flex-shrink-0 mt-0.5"
                     />
                     <span className="text-emerald-600">
-                      Free shipping on orders over ₹ 50
+                      Free shipping on orders over ₹500
                     </span>
                   </div>
                   <div className="flex items-start gap-2">

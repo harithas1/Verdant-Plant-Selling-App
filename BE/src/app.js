@@ -5,6 +5,7 @@ const cors = require("cors");
 const customerRoutes = require("./routes/customerRoutes")
 const plantRoutes = require("./routes/plantsRoutes")
 const categoryRoutes = require("./routes/categoryRoutes")
+const cartRoutes = require("./routes/cartRoutes")
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/auth", customerRoutes);
 app.use("/plants", plantRoutes);
 app.use("/category", categoryRoutes);
+app.use("/cart",cartRoutes)
 
 
 

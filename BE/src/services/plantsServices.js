@@ -1,6 +1,5 @@
 const prisma = require("../prisma/prismaClient.js");
 
-
 const addPlantService = async ({
   name,
   description,
@@ -18,7 +17,7 @@ const addPlantService = async ({
     where: { id: categoryId },
   });
   console.log(category);
-  
+
   if (!categoryId) {
     throw new Error("Category not found");
   }
@@ -38,39 +37,12 @@ const addPlantService = async ({
     },
   });
 
-  return newPlant
+  return newPlant;
 };
 
 // ---------------------------------------------------------
 
-
-// model Plant {
-//   id            Int        @id @default(autoincrement())
-//   name          String
-//   description   String
-//   categoryId    Int
-//   price         Float
-//   image         String
-//   care          String
-//   size          Size
-//   light         String
-//   stock         Int
-//   featured      Boolean    @default(false)
-//   rating        Float      @default(0.0)
-//   createdAt     DateTime   @default(now())
-//   updatedAt     DateTime   @updatedAt
-//   cartItems     Cart[]
-//   orders        Order[]
-//   category      Category   @relation(fields: [categoryId], references: [id])
-//   reviews       Review[]
-//   wishlistItems Wishlist[]
-// }
-
-
-
-
 // get all plants
-
 
 const getAllPlants = async (page, pageSize = 10) => {
   console.log("Fetching all plants...");
@@ -84,7 +56,7 @@ const getAllPlants = async (page, pageSize = 10) => {
         reviews: true,
       },
     });
-
+    // console.log("heloooooo", JSON.stringify(allPlants, null, 2));
     const totalPlants = await prisma.plant.count();
 
     return {
@@ -96,10 +68,6 @@ const getAllPlants = async (page, pageSize = 10) => {
     throw new Error("Failed to fetch plants");
   }
 };
-
-
-
-
 
 module.exports = {
   addPlantService,

@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import PlantCard from "../components/PlantCard";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import { initialCartItems } from "./Cart";
+import { custCartItems } from "../data/plants"; 
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -27,33 +27,33 @@ const ProductDetail = () => {
   const [isWritingReview, setIsWritingReview] = useState(false);
   const [rating, setRating] = useState(0);
   const [writeReview, setWriteReview] = useState({
-    stars: 0,
+    rating: 0,
     date: "",
-    title: "",
-    text: "",
+    comment: "",
     author: "",
   });
+  console.log("reviews ?",plants);
+  
 
   const [reviews, setReviews] = useState([
     {
-      stars: 5,
+      rating: 5,
       date: "1 month ago",
-      title: "Healthy and beautiful!",
-      text: "My plant arrived in perfect condition. It's even bigger than I expected and looks so healthy!",
+      comment:
+        "My plant arrived in perfect condition. It's even bigger than I expected and looks so healthy!",
       author: "Jamie L.",
     },
     {
-      stars: 4,
+      rating: 4,
       date: "2 months ago",
-      title: "Great addition to my collection",
-      text: "The plant is thriving in my living room. It had a few small brown spots on arrival but nothing major.",
+      comment:
+        "The plant is thriving in my living room. It had a few small brown spots on arrival but nothing major.",
       author: "Alex T.",
     },
     {
-      stars: 5,
+      rating: 5,
       date: "3 months ago",
-      title: "Excellent packaging",
-      text: "I was impressed with how carefully the plant was packaged. Not a single leaf was damaged during shipping.",
+      comment: "I was impressed with how carefully the plant was packaged. Not a single leaf was damaged during shipping.",
       author: "Morgan W.",
     },
   ]);
@@ -102,13 +102,13 @@ const ProductDetail = () => {
   const addToCart = () => {
     console.log(plant);
 
-    const exists = initialCartItems.some(
+    const exists = custCartItems.some(
       (item) => item.plantId === plant.id || item.quantity === selectedQuantity
     );
 
     if (!exists) {
-      initialCartItems.push({
-        id: initialCartItems.length + 1,
+      custCartItems.push({
+        id: custCartItems.length + 1,
         plantId: plant.id,
         quantity: selectedQuantity,
       });
@@ -306,7 +306,7 @@ const ProductDetail = () => {
                         Free Shipping
                       </h4>
                       <p className="text-xs text-emerald-600">
-                        On orders over $50
+                        On orders over $500
                       </p>
                     </div>
                   </div>
@@ -357,17 +357,16 @@ const ProductDetail = () => {
 
                 const newReview = {
                   ...writeReview,
-                  stars: rating,
+                  rating: rating,
                   date: "Just now", // Or use something like: new Date().toLocaleDateString()
                 };
 
                 setReviews((prev) => [newReview, ...prev]); // Add new review to the list
                 setIsWritingReview(false);
                 setWriteReview({
-                  stars: 0,
+                  rating: 0,
                   date: "",
-                  title: "",
-                  text: "",
+                  comment: "",
                   author: "",
                 });
                 setRating(0);
@@ -391,25 +390,15 @@ const ProductDetail = () => {
                 ))}
               </div>
 
-              {/* Title input */}
-              <input
-                type="text"
-                placeholder="Title"
-                className="w-full border rounded p-2 mb-4"
-                value={writeReview.title}
-                onChange={(e) =>
-                  setWriteReview({ ...writeReview, title: e.target.value })
-                }
-              />
 
               {/* Text input */}
               <textarea
                 placeholder="Write your review..."
                 className="w-full border rounded p-2 mb-4"
                 rows="4"
-                value={writeReview.text}
+                value={writeReview.comment}
                 onChange={(e) =>
-                  setWriteReview({ ...writeReview, text: e.target.value })
+                  setWriteReview({ ...writeReview, comment: e.target.value })
                 }
               />
 
@@ -445,16 +434,13 @@ const ProductDetail = () => {
                 <div className="flex items-center mb-2">
                   <div className="flex items-center text-stone-500 mr-2">
                     {[1, 2, 3, 4, 5].map((star) => (
-                      <span key={star}>{star <= review.stars ? "★" : "☆"}</span>
+                      <span key={star}>{star <= review.rating ? "★" : "☆"}</span>
                     ))}
                   </div>
                   <span className="text-sm text-emerald-600">
                     {review.date}
                   </span>
                 </div>
-                <h4 className="font-medium text-emerald-800 mb-1">
-                  {review.title}
-                </h4>
                 <p className="text-emerald-600 mb-2">{review.text}</p>
                 <div className="text-sm text-emerald-700 font-medium">
                   - {review.author}

@@ -113,7 +113,7 @@ const Shop = () => {
 
   // Reset all filters
   const resetFilters = () => {
-    setPriceRange([0, 50]);
+    setPriceRange(availablePriceRange);
     setSelectedCategories([]);
     setSizes([]);
     setLightLevels([]);
