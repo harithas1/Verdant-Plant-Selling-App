@@ -51,27 +51,33 @@ const AuthPage = () => {
           };
 
       const response = await axios.post(endpoint, payload);
-      console.log("response",response);
-      
+      console.log("response", response);
 
       toast.success(
         response.data.message ||
           (isSignUp ? "Registration successful!" : "Login successful!")
       );
 
-      if (isSignUp) {
-        setUser({ name: payload.name, email: payload.email });
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ name: payload.name, email: payload.email })
-        );
-      } else {
+      //  Only proceed if login is successful
+      if (!isSignUp) {
+        if (!response.data.customer.emailVerified) {
+          toast.error("Please verify your email before logging in.");
+          return; // ⬅️ Block navigation to home
+        }
+
         setUser(response.data.customer);
         localStorage.setItem("user", JSON.stringify(response.data.customer));
 
         if (response.data.token) {
           localStorage.setItem("token", response.data.token);
         }
+      } else {
+        // Signup flow
+        setUser({ name: payload.name, email: payload.email });
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ name: payload.name, email: payload.email })
+        );
       }
 
       setFormData({ name: "", email: "", password: "", phone: "" });
