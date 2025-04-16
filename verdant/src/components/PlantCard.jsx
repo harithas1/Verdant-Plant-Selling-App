@@ -10,7 +10,7 @@ const PlantCard = ({ plant }) => {
           <img
             src={plant.image}
             alt={plant.name}
-            className="h-48 w-full place-self-center object-cover transition-transform duration-300 group-hover:scale-105"
+            className="size-48 place-self-center object-cover bg-no-repeat transition-transform duration-300 group-hover:scale-105"
           />
         </Link>
         <button
@@ -31,6 +31,7 @@ const PlantCard = ({ plant }) => {
           </div>
         )}
       </div>
+      
       <div className="p-4 flex flex-col justify-evenly">
         <div className="flex justify-between items-start mb-1">
           <Link to={`/shop/${plant.id}`}>

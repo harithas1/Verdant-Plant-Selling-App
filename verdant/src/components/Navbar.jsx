@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Menu, X, Search, User, User2, UserCircle } from "lucide-react";
+import { ShoppingCart, Menu, X, Search, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearch } from "@/hooks/useSearch";
 import SearchResults from "./SearchResults";
@@ -127,7 +127,7 @@ const Navbar = ({ cartItemCount = 0 }) => {
                   variant="outline"
                   className="ml-4 border-emerald-700 text-emerald-600 hover:bg-emerald-100"
                 >
-                  Login
+                  Sign in
                 </Button>
               </Link>
             )}
@@ -242,7 +242,7 @@ const Navbar = ({ cartItemCount = 0 }) => {
                     className="flex items-center text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Login / Sign up
+                    Sign in / Sign up
                   </Link>
                 )}
               </div>

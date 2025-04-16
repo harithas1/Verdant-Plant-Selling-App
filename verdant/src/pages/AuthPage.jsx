@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -13,28 +14,73 @@ const AuthPage = () => {
     name: "",
     email: "",
     password: "",
+    phone: "",
   });
 
   const { setUser } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    console.log(formData);
+
     e.preventDefault();
 
-    if (!formData.email || !formData.password || (isSignUp && !formData.name)) {
-      toast("Please fill all required fields.");
+    if (
+      !formData.email ||
+      !formData.password ||
+      (isSignUp && (!formData.name || !formData.phone))
+    ) {
+      toast.error("Please fill all required fields.");
       return;
     }
 
-    if (isSignUp) {
-      toast(`Welcome, ${formData.name}! Your account has been created.`);
-      setUser({ name: formData.name, email: formData.email });
-    } else {
-      toast(`Welcome back! Logged in as ${formData.email}`);
-      setUser({ email: formData.email });
-    }
+    try {
+      const endpoint = isSignUp
+        ? "http://localhost:3000/api/auth/register"
+        : "http://localhost:3000/api/auth/login";
 
-    setFormData({ name: "", email: "", password: "" });
-    navigate("/")
+      const payload = isSignUp
+        ? {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            phone: formData.phone,
+          }
+        : {
+            email: formData.email,
+            password: formData.password,
+          };
+
+      const response = await axios.post(endpoint, payload);
+      console.log("response",response);
+      
+
+      toast.success(
+        response.data.message ||
+          (isSignUp ? "Registration successful!" : "Login successful!")
+      );
+
+      if (isSignUp) {
+        setUser({ name: payload.name, email: payload.email });
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ name: payload.name, email: payload.email })
+        );
+      } else {
+        setUser(response.data.customer);
+        localStorage.setItem("user", JSON.stringify(response.data.customer));
+
+        if (response.data.token) {
+          localStorage.setItem("token", response.data.token);
+        }
+      }
+
+      setFormData({ name: "", email: "", password: "", phone: "" });
+      navigate("/");
+    } catch (error) {
+      console.error("Auth error:", error);
+      const errorMsg = error.response?.data?.error || "Something went wrong!";
+      toast.error(errorMsg);
+    }
   };
 
   return (
@@ -65,6 +111,17 @@ const AuthPage = () => {
               setFormData({ ...formData, email: e.target.value })
             }
           />
+          {isSignUp && (
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              className="w-full border rounded p-3 text-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              value={formData.phone}
+              onChange={(e) =>
+                setFormData({ ...formData, phone: e.target.value })
+              }
+            />
+          )}
           <input
             type="password"
             placeholder="Password"

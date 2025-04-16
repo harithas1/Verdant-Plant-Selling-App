@@ -109,7 +109,7 @@ const Shop = () => {
 
   return (
     <div className="bg-amber-50 min-h-screen overflow-x-hidden">
-      <div className="container mx-auto py-8 overflow-hidden">
+      <div className="container mx-auto px-4 py-8 overflow-hidden">
         <h1 className="text-3xl font-display font-bold text-emerald-800 mb-2">
           Shop Plants
         </h1>
@@ -118,7 +118,7 @@ const Shop = () => {
         </p>
 
         {/* Mobile filter button and sort dropdown */}
-        <div className="flex text-sm flex-row gap-2 justify-between items-center mb-6 md:hidden">
+        <div className="flex text-sm flex-row gap-2 justify-evenly items-center mb-6 md:hidden">
           <button
             className="flex items-center space-x-2 bg-white px-2 py-2 rounded-md shadow-sm"
             onClick={() => setShowFilters(!showFilters)}
@@ -286,7 +286,7 @@ const Shop = () => {
           {/* Main Content */}
           <div className="flex-1">
             {/* Sort options - Desktop */}
-            <div className="hidden md:flex justify-evenly items-center mb-6">
+            <div className="hidden md:flex justify-between items-center mb-6">
               <p className="text-emerald-600">
                 {filteredPlants.length} products
               </p>
@@ -305,10 +305,10 @@ const Shop = () => {
                 </select>
               </div>
             </div>
-
-            {/* Products Grid */}
+            {/* Products Grid */} 
+            {/* grid-cols-1 md:grid-cols-2 lg:grid-cols-4 */}
             {filteredPlants.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 overflow-hidden">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 overflow-hidden">
                 {filteredPlants.map((plant) => (
                   <PlantCard key={plant.id} plant={plant} />
                 ))}
