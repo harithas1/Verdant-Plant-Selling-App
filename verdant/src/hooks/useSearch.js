@@ -18,7 +18,7 @@ export const useSearch = () => {
     const results = plants.filter((plant) => {
       return (
         plant.name.toLowerCase().includes(lowercaseQuery) ||
-        plant.category.toLowerCase().includes(lowercaseQuery) ||
+        plant.category.name.toLowerCase().includes(lowercaseQuery) ||
         plant.description.toLowerCase().includes(lowercaseQuery)
       );
     });

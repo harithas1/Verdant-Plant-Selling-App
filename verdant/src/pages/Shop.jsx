@@ -20,11 +20,24 @@ const Shop = () => {
   const [lightLevels, setLightLevels] = useState([]);
   const [sortBy, setSortBy] = useState("filtered");
   const [showFilters, setShowFilters] = useState(false);
+  const [availablePriceRange, setAvailablePriceRange] = useState([0, 0]); // storing price range
 
   // Get unique categories, sizes, and light levels
-  const allCategories = [...new Set(plants.map((plant) => plant.category))];
+  const allCategories = [
+    ...new Set(plants.map((plant) => plant.category.name)),
+  ];
   const allSizes = [...new Set(plants.map((plant) => plant.size))];
   const allLightLevels = [...new Set(plants.map((plant) => plant.light))];
+
+  useEffect(() => {
+    if (plants.length > 0) {
+      const prices = plants.map((plant) => plant.price);
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
+      setAvailablePriceRange([min, max]);
+      setPriceRange([min, max]); // initial filter range equals available
+    }
+  }, []);
 
   // Filter products based on selected filters
   useEffect(() => {
@@ -38,7 +51,7 @@ const Shop = () => {
     // Filter by categories
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((plant) =>
-        selectedCategories.includes(plant.category)
+        selectedCategories.includes(plant.category.name)
       );
     }
 
@@ -177,16 +190,16 @@ const Shop = () => {
                   <div className="mt-2 px-1">
                     <Slider
                       defaultValue={[0, 50]}
-                      min={0}
-                      max={50}
+                      min={availablePriceRange[0]}
+                      max={availablePriceRange[1]}
                       step={1}
                       value={priceRange}
                       onValueChange={setPriceRange}
                       className="my-6"
                     />
                     <div className="flex justify-between text-sm text-emerald-600 mt-1">
-                      <span>${priceRange[0]}</span>
-                      <span>${priceRange[1]}</span>
+                      <span>₹{priceRange[0]}</span>
+                      <span>₹{priceRange[1]}</span>
                     </div>
                   </div>
                 </AccordionContent>
@@ -305,7 +318,7 @@ const Shop = () => {
                 </select>
               </div>
             </div>
-            {/* Products Grid */} 
+            {/* Products Grid */}
             {/* grid-cols-1 md:grid-cols-2 lg:grid-cols-4 */}
             {filteredPlants.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 overflow-hidden">

@@ -112,6 +112,7 @@ const Navbar = ({ cartItemCount = 0 }) => {
                     <button
                       onClick={() => {
                         setUser(null);
+                        localStorage.removeItem("token");
                         setIsUserMenuOpen(false);
                       }}
                       className=" w-full px-4 py-2 rounded-b-lg text-red-600 hover:bg-red-600 hover:text-white"

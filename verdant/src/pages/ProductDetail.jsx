@@ -75,7 +75,7 @@ const ProductDetail = () => {
       // Find related plants in the same category
       const related = plants
         .filter(
-          (p) => p.category === foundPlant.category && p.id !== foundPlant.id
+          (p) => p.category.name === foundPlant.category.name && p.id !== foundPlant.id
         )
         .slice(0, 4);
       setRelatedPlants(related);
@@ -102,8 +102,9 @@ const ProductDetail = () => {
   const addToCart = () => {
     console.log(plant);
 
-    
-    const exists = initialCartItems.some((item) => (item.plantId === plant.id || item.quantity===selectedQuantity));
+    const exists = initialCartItems.some(
+      (item) => item.plantId === plant.id || item.quantity === selectedQuantity
+    );
 
     if (!exists) {
       initialCartItems.push({
@@ -209,9 +210,9 @@ const ProductDetail = () => {
                 <h1 className="text-3xl font-display font-bold text-sky-600 mb-2">
                   {plant.name}
                 </h1>
-                <p className="text-emerald-600 mb-4">{plant.category}</p>
+                <p className="text-emerald-600 mb-4">{plant.category.name}</p>
                 <div className="text-2xl font-semibold text-emerald-700 mb-6">
-                  ${plant.price.toFixed(2)}
+                  ₹ {plant.price.toFixed(2)}
                 </div>
                 <p className="text-emerald-700 mb-6">{plant.description}</p>
 

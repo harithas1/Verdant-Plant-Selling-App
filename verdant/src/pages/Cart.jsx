@@ -13,7 +13,7 @@ import { plants } from "../data/plants";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 
-// Mock cart data 
+// Mock cart data
 export const initialCartItems = [
   { id: 1, plantId: 1, quantity: 1 },
   { id: 2, plantId: 6, quantity: 2 },
@@ -43,7 +43,7 @@ const Cart = () => {
 
     const item = cartWithDetails.find((item) => item.id === id);
     if (item && newQuantity > item.plant.stock) {
-      toast(`Sorry, we only have ${item.plant.stock} of this item in stock.`);
+      toast(`Sorry, we only have ₹ {item.plant.stock} of this item in stock.`);
       return;
     }
 
@@ -133,23 +133,23 @@ const Cart = () => {
                         </div>
                         <div>
                           <Link
-                            to={`/shop/${item.plant.id}`}
+                            to={`/shop/₹ {item.plant.id}`}
                             className="font-medium text-emerald-800 hover:text-emerald-600"
                           >
                             {item.plant.name}
                           </Link>
                           <p className="text-sm text-emerald-600">
-                            {item.plant.category}
+                            {item.plant.category.name}
                           </p>
                           <p className="text-sm text-emerald-600 md:hidden mt-1">
-                            ${item.plant.price.toFixed(2)}
+                            ₹ {item.plant.price.toFixed(2)}
                           </p>
                         </div>
                       </div>
 
                       {/* Price - Desktop */}
                       <div className="hidden md:block md:col-span-2 text-center text-emerald-700">
-                        ${item.plant.price.toFixed(2)}
+                        ₹ {item.plant.price.toFixed(2)}
                       </div>
 
                       {/* Quantity - Mobile & Desktop */}
@@ -187,7 +187,7 @@ const Cart = () => {
                         </span>
                         <div className="flex items-center">
                           <span className="font-medium text-emerald-800 mr-4">
-                            ${(item.plant.price * item.quantity).toFixed(2)}
+                            ₹ {(item.plant.price * item.quantity).toFixed(2)}
                           </span>
                           <button
                             className="text-emerald-600 hover:text-emerald-800"
@@ -231,18 +231,18 @@ const Cart = () => {
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-emerald-700">
                     <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>₹ {subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-emerald-700">
                     <span>Shipping</span>
                     <span>
-                      {shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}
+                      {shipping === 0 ? "Free" : `₹ ₹ {shipping.toFixed(2)}`}
                     </span>
                   </div>
                   <div className="pt-4 border-t border-emerald-100">
                     <div className="flex justify-between font-semibold text-emerald-800">
                       <span>Total</span>
-                      <span>${total.toFixed(2)}</span>
+                      <span>₹ {total.toFixed(2)}</span>
                     </div>
                     <div className="text-xs text-emerald-600 text-right mt-1">
                       Including taxes
@@ -265,7 +265,7 @@ const Cart = () => {
                       className="text-emerald-600 flex-shrink-0 mt-0.5"
                     />
                     <span className="text-emerald-600">
-                      Free shipping on orders over $50
+                      Free shipping on orders over ₹ 50
                     </span>
                   </div>
                   <div className="flex items-start gap-2">
@@ -278,7 +278,6 @@ const Cart = () => {
                     </span>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>

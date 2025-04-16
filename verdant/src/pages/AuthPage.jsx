@@ -10,6 +10,7 @@ import axios from "axios";
 const AuthPage = () => {
   const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,13 +18,13 @@ const AuthPage = () => {
     phone: "",
   });
 
+
   const { setUser } = useAuth();
 
   const handleSubmit = async (e) => {
-    console.log(formData);
-
     e.preventDefault();
 
+    // Validating form data
     if (
       !formData.email ||
       !formData.password ||
@@ -33,11 +34,14 @@ const AuthPage = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
       const endpoint = isSignUp
         ? "http://localhost:3000/api/auth/register"
         : "http://localhost:3000/api/auth/login";
 
+      // Setting the payload for both signup and login
       const payload = isSignUp
         ? {
             name: formData.name,
@@ -49,43 +53,51 @@ const AuthPage = () => {
             email: formData.email,
             password: formData.password,
           };
+      // console.log(payload);
+      
 
+      // Sending the request 
       const response = await axios.post(endpoint, payload);
-      console.log("response", response);
+      console.log(response);
+      
 
-      toast.success(
-        response.data.message ||
-          (isSignUp ? "Registration successful!" : "Login successful!")
-      );
+      // Handle signup response
+      if (isSignUp) {
+        toast.success(
+          response.data.message ||
+            "Registration successful! Please check your email to verify."
+        );
+        setFormData({ name: "", email: "", password: "", phone: "" });
+        setIsSignUp(false); // Switching to login mode
+        navigate("/auth"); // Redirect to the login page for verification check
+        return;
+      }
 
-      //  Only proceed if login is successful
-      if (!isSignUp) {
-        if (!response.data.customer.emailVerified) {
-          toast.error("Please verify your email before logging in.");
-          return; // ⬅️ Block navigation to home
-        }
-
+      // Handle login response
+      else if (response.data.message === "Login successful!") {
+        console.log(response);
+        
+        // Successful login
         setUser(response.data.customer);
         localStorage.setItem("user", JSON.stringify(response.data.customer));
 
         if (response.data.token) {
           localStorage.setItem("token", response.data.token);
         }
-      } else {
-        // Signup flow
-        setUser({ name: payload.name, email: payload.email });
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ name: payload.name, email: payload.email })
-        );
-      }
 
-      setFormData({ name: "", email: "", password: "", phone: "" });
-      navigate("/");
+        toast.success("Login successful!");
+        setFormData({ name: "", email: "", password: "", phone: "" });
+        navigate("/"); // Redirecting to the homepage after successful login
+      } else {
+        toast.error(response.data.message || "Something went wrong!");
+      }
     } catch (error) {
       console.error("Auth error:", error);
-      const errorMsg = error.response?.data?.error || "Something went wrong!";
+      const errorMsg =
+        error.response?.data?.error || error.message || "Something went wrong!";
       toast.error(errorMsg);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -137,12 +149,12 @@ const AuthPage = () => {
               setFormData({ ...formData, password: e.target.value })
             }
           />
-
           <Button
             type="submit"
+            disabled={loading}
             className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 rounded"
           >
-            {isSignUp ? "Sign Up" : "Sign In"}
+            {loading ? "Please wait..." : isSignUp ? "Sign Up" : "Sign In"}
           </Button>
         </form>
 

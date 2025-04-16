@@ -12,6 +12,8 @@ const SearchResults = ({ results, onSelect }) => {
   if (results.length === 0) {
     return null;
   }
+  // console.log(results);
+  
 
   return (
     <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white rounded-md shadow-lg border border-verdant-200">
@@ -33,7 +35,7 @@ const SearchResults = ({ results, onSelect }) => {
                   />
                   <div>
                     <p className="font-medium text-verdant-800">{plant.name}</p>
-                    <p className="text-sm text-verdant-600">${plant.price}</p>
+                    <p className="text-sm text-verdant-600">₹ {plant.price}</p>
                   </div>
                 </Link>
               </CommandItem>
