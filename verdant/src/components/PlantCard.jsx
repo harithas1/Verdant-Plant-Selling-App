@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Heart } from "lucide-react";
+// import { Heart } from "lucide-react";
 
 const PlantCard = ({ plant }) => {
   return (
@@ -13,13 +13,13 @@ const PlantCard = ({ plant }) => {
             className="size-48 place-self-center object-cover bg-no-repeat transition-transform duration-300 group-hover:scale-105"
           />
         </Link>
-        <button
+        {/* <button
           className="absolute top-3 right-3 bg-white bg-opacity-80 p-1.5 rounded-full text-emerald-600 hover:bg-opacity-100 transition-colors"
           aria-label="Add to wishlist"
           title="Add to wishlist"
         >
           <Heart size={20} />
-        </button>
+        </button> */}
         {plant.stock <= 5 && plant.stock > 0 && (
           <div className="absolute top-3 left-3 bg-amber-500 text-emerald-800 text-xs font-semibold px-2 py-1 rounded">
             Only {plant.stock} left!

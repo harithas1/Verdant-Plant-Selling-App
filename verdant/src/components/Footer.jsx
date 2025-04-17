@@ -2,9 +2,33 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Instagram, Facebook, Twitter, Mail } from "lucide-react";
 import vf from "../assets/vf.png";
+import { newsletterSubsription } from "@/data/plants";
+import { toast } from "sonner";
+import { Toaster } from "./ui/sonner";
 
 
 const Footer = () => {
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target.elements.email.value;
+
+    if (!email) {
+      toast("Please enter your email.");
+      return;
+    }
+
+    try {
+      await newsletterSubsription({ email });
+      toast("Thanks for subscribing!");
+      e.target.reset();
+    } catch (error) {
+      toast("Subscription failed.");
+      console.error(error);
+    }
+  };
+
+
   return (
     <footer className="bg-emerald-950 text-amber-50 pt-12 pb-6">
       <div className="container mx-auto px-4">
@@ -27,7 +51,7 @@ const Footer = () => {
               >
                 <Instagram size={20} />
               </a>
-              <a
+              {/* <a
                 href="https://facebook.com"
                 className="text-amber-50 hover:text-emerald-300 transition-colors"
                 aria-label="Facebook"
@@ -40,9 +64,9 @@ const Footer = () => {
                 aria-label="Twitter"
               >
                 <Twitter size={20} />
-              </a>
+              </a> */}
               <a
-                href="mailto:hello@emerald.com"
+                href="mailto:violahello2@gmail.com"
                 className="text-amber-50 hover:text-emerald-300 transition-colors"
                 aria-label="Email"
               >
@@ -211,16 +235,20 @@ const Footer = () => {
           <div className="max-w-md mx-auto md:mx-0">
             <h3 className="text-lg font-semibold mb-2">Join our newsletter</h3>
             <p className=" mb-4">Get plant care tips and exclusive offers</p>
-            <div className="flex text-black">
+            <form onSubmit={handleNewsletterSubmit} className="flex text-black">
               <input
                 type="email"
+                name="email"
                 placeholder="Your email address"
                 className="px-4 py-2 w-full placeholder:text-black bg-white rounded-l-md text-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
-              <button className="bg-orange-300 hover:bg-yellow-600  font-semibold py-2 px-4 rounded-r-md transition-colors duration-200">
+              <button
+                type="submit"
+                className="bg-orange-300 hover:bg-yellow-600  font-semibold py-2 px-4 rounded-r-md transition-colors duration-200"
+              >
                 Subscribe
               </button>
-            </div>
+            </form>
           </div>
         </div>
 
@@ -229,6 +257,7 @@ const Footer = () => {
           <p>© {new Date().getFullYear()} Verdant. All rights reserved.</p>
         </div>
       </div>
+      <Toaster />
     </footer>
   );
 };

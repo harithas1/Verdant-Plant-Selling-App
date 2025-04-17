@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { addItemToCart, plants } from "../data/plants";
 import {
-  Heart,
+  addItemToCart,
+  getAllCartItems,
+  plants,
+  addProductReview,
+  getPlantReviews,
+} from "../data/plants";
+import {
+  // Heart,
   Truck,
   ShieldCheck,
   Sun,
@@ -15,9 +21,13 @@ import { Button } from "@/components/ui/button";
 import PlantCard from "../components/PlantCard";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import { custCartItems } from "../data/plants";
 
 const ProductDetail = () => {
+  const user = JSON.parse(localStorage.getItem("user"))
+    ? JSON.parse(localStorage.getItem("user"))
+    : "";
+  console.log(user.name);
+
   const { id } = useParams();
   const [plant, setPlant] = useState(null);
   const [relatedPlants, setRelatedPlants] = useState([]);
@@ -30,29 +40,75 @@ const ProductDetail = () => {
     rating: 0,
     date: "",
     comment: "",
-    reviewerName: "",
+    reviewerName: user?.name || "",
+    reviewerEmail: user?.email || "",
+    custId: user?.id || null,
+    plantId: id,
   });
 
-  const user = JSON.parse(localStorage.getItem("user"))
-    ? JSON.parse(localStorage.getItem("user"))
-    : "";
-  console.log(user.name);
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
 
-  console.log(
-    "reviews ?",
-    plants.flatMap((plant) => plant.reviews)
-  );
+    const newReview = {
+      ...writeReview,
+      rating,
+      date: new Date().toISOString(),
+    };
 
-  const [reviews, setReviews] = useState(
-    plants.flatMap((plant) => plant.reviews)
-  );
+    try {
+      await addProductReview(
+        newReview.custId,
+        newReview.plantId,
+        newReview.rating,
+        newReview.comment,
+        newReview.reviewerName,
+        newReview.reviewerEmail
+      );
+
+      // Update the UI
+      setReviews((prev) => [newReview, ...prev]);
+      toast("Thanks for your review!");
+
+      // Reset form
+      setIsWritingReview(false);
+      setWriteReview({
+        rating: 0,
+        date: "",
+        comment: "",
+        reviewerName: user?.name || "",
+        reviewerEmail: user?.email || "",
+        custId: user?.id || null,
+        plantId: id,
+      });
+      setRating(0);
+    } catch (error) {
+      toast.error("Failed to submit review. Please try again.");
+      console.error("Error submitting review:", error);
+    }
+  };
+
+  const [custCartItems, setCustCartItems] = useState([]);
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      const items = await getAllCartItems();
+      setCustCartItems(items || []);
+    };
+    fetchCartItems();
+  }, []);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const reviewsOfAPlant = await getPlantReviews({ plantId: id });
+      setReviews(reviewsOfAPlant);
+      console.log("Fetched reviews:", reviewsOfAPlant);
+    };
+    if (id) fetchReviews();
+  }, [id]); 
+
   // Mock image gallery - in a real app, each plant would have multiple images
-  const mockGallery = [
-    plant?.image,
-    "https://images.unsplash.com/photo-1594057687713-5fd14eed1a8f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1581090562446-1ef42bee86a8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1598510495810-84f8ff42719b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-  ];
+  const mockGallery = [plant?.image, plant?.image, plant?.image, plant?.image];
 
   useEffect(() => {
     setLoading(true);
@@ -279,13 +335,13 @@ const ProductDetail = () => {
                   >
                     {plant.stock > 0 ? "Add to Cart" : "Out of Stock"}
                   </Button>
-                  <Button
+                  {/* <Button
                     variant="outline"
                     className="flex-shrink-0 py-6 flex items-center justify-center gap-2 border-emerald-600 text-emerald-600 hover:bg-emerald-100"
                     onClick={addToWishlist}
                   >
                     <Heart size={18} /> Add to Wishlist
-                  </Button>
+                  </Button> */}
                 </div>
 
                 {/* Benefits */}
@@ -346,26 +402,7 @@ const ProductDetail = () => {
 
           {isWritingReview && (
             <form
-              onSubmit={(e) => {
-                e.preventDefault();
-
-                const newReview = {
-                  ...writeReview,
-                  rating: rating,
-                  date: "Just now", // Or use something like: new Date().toLocaleDateString()
-                };
-
-                setReviews((prev) => [newReview, ...prev]); // Add new review to the list
-                setIsWritingReview(false);
-                setWriteReview({
-                  rating: 0,
-                  date: "",
-                  comment: "",
-                  reviewerName: "",
-                });
-                setRating(0);
-                toast("Thanks for your review!");
-              }}
+              onSubmit={handleReviewSubmit}
               className="bg-white border rounded-lg shadow-lg p-4 mb-8"
             >
               {/* Rating stars */}
@@ -415,7 +452,7 @@ const ProductDetail = () => {
           )}
 
           <div className="space-y-6  overflow-y-scroll">
-            {reviews.map((review, index) => (
+            {reviews?.map((review, index) => (
               <div
                 key={index}
                 className={`border-b ${
@@ -431,7 +468,7 @@ const ProductDetail = () => {
                     ))}
                   </div>
                   <span className="text-sm text-emerald-600">
-                    {review.date}
+                    {new Date(review.date).toLocaleDateString("en-IN")}
                   </span>
                 </div>
                 <p className="text-emerald-600 mb-2">{review.comment}</p>
@@ -449,7 +486,7 @@ const ProductDetail = () => {
 
         {/* Related Products */}
         {relatedPlants.length > 0 && (
-          <div className="mb-12 bg-white p-4 rounded-lg border shadow-lg">
+          <div className="mb-12 p-4 rounded-lg">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-display font-semibold text-emerald-900">
                 You May Also Like

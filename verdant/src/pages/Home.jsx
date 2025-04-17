@@ -1,13 +1,37 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { plants, categories } from "../data/plants";
+import { plants, categories, newsletterSubsription } from "../data/plants";
 import { ChevronRight, Truck, Droplet, Award, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PlantCard from "@/components/PlantCard";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const Home = () => {
+  const allReviews = plants.flatMap((plant) => plant.reviews);
+
   // Get featured plants
   const featuredPlants = plants.filter((plant) => plant.featured);
+
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+
+    const email = e.target.elements.email.value;
+    if (!email) {
+      toast("Please enter your email.");
+      return;
+    }
+
+    try {
+      await newsletterSubsription({ email });
+      toast("Thanks for subscribing!");
+      e.target.reset();
+    } catch (error) {
+      toast("Subscription failed. Please try again later.");
+      console.error(error);
+    }
+  };
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -172,58 +196,28 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
       <section className="py-16 bg-amber-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-display font-semibold text-emerald-900 text-center mb-12">
             What Our Customers Say
           </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="flex items-center space-x-1 mb-4 text-amber-500">
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
+            {allReviews.slice(0, 3).map((review, index) => (
+              <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="flex items-center space-x-1 mb-4 text-amber-500">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span key={star}>{star <= review.rating ? "★" : "☆"}</span>
+                  ))}
+                </div>
+                <p className="text-emerald-700 mb-4 italic">
+                  "{review.comment}"
+                </p>
+                <div className="font-semibold text-emerald-800">
+                  - {review.reviewerName}
+                </div>
               </div>
-              <p className="text-emerald-700 mb-4 italic">
-                "My monstera arrived in perfect condition and was even bigger
-                than I expected! It's thriving in my living room and I've
-                already ordered more plants."
-              </p>
-              <div className="font-semibold text-emerald-800">- Sarah K.</div>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="flex items-center space-x-1 mb-4 text-amber-500">
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-              </div>
-              <p className="text-emerald-700 mb-4 italic">
-                "The care instructions were so helpful for a plant newbie like
-                me. Three months later and all my plants are still alive and
-                growing!"
-              </p>
-              <div className="font-semibold text-emerald-800">- James T.</div>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="flex items-center space-x-1 mb-4 text-amber-500">
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-              </div>
-              <p className="text-emerald-700 mb-4 italic">
-                "Exceptional customer service when I had questions about my
-                fiddle leaf fig. The team went above and beyond to help me solve
-                the issue."
-              </p>
-              <div className="font-semibold text-emerald-800">- Maria L.</div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -239,19 +233,29 @@ const Home = () => {
               Subscribe to our newsletter for plant care tips, special offers,
               and first dibs on new arrivals.
             </p>
-            <div className="flex flex-col sm:flex-row max-w-lg mx-auto">
+            <form
+              onSubmit={handleNewsletterSubmit}
+              className="flex flex-col sm:flex-row max-w-lg mx-auto"
+            >
               <input
                 type="email"
+                name="email"
                 placeholder="Your email address"
                 className="flex-grow px-4 py-3 rounded-l-md sm:rounded-r-none placeholder:text-black bg-white mb-2 sm:mb-0 focus:outline-none"
               />
-              <button className="bg-orange-300 hover:bg-yellow-600  font-semibold px-6 py-3 rounded-md sm:rounded-l-none transition-colors duration-200">
+              <button
+                type="submit"
+                className="bg-orange-300 hover:bg-yellow-600 font-semibold px-6 py-3 rounded-md sm:rounded-l-none transition-colors duration-200"
+              >
                 Subscribe
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </section>
+      <footer>
+        <Toaster />
+      </footer>
     </div>
   );
 };

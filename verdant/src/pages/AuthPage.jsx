@@ -18,7 +18,6 @@ const AuthPage = () => {
     phone: "",
   });
 
-
   const { setUser } = useAuth();
 
   const handleSubmit = async (e) => {
@@ -38,8 +37,8 @@ const AuthPage = () => {
 
     try {
       const endpoint = isSignUp
-        ? "http://localhost:3000/api/auth/register"
-        : "http://localhost:3000/api/auth/login";
+        ? "https://verdant-plant-selling-app.onrender.com/api/auth/register"
+        : "https://verdant-plant-selling-app.onrender.com/api/auth/login";
 
       // Setting the payload for both signup and login
       const payload = isSignUp
@@ -54,12 +53,10 @@ const AuthPage = () => {
             password: formData.password,
           };
       // console.log(payload);
-      
 
-      // Sending the request 
+      // Sending the request
       const response = await axios.post(endpoint, payload);
       console.log(response);
-      
 
       // Handle signup response
       if (isSignUp) {
@@ -76,7 +73,7 @@ const AuthPage = () => {
       // Handle login response
       else if (response.data.message === "Login successful!") {
         console.log(response);
-        
+
         // Successful login
         setUser(response.data.customer);
         localStorage.setItem("user", JSON.stringify(response.data.customer));

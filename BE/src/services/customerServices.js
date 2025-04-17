@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const prisma = require("../prisma/prismaClient");
 const sendEmail = require("../utils/mailer");
+const { string } = require("joi");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -37,7 +38,7 @@ const registerCustomer = async ({ name, email, phone, password }) => {
     { expiresIn: "1d" }
   );
 
-  const verificationLink = `http://localhost:3000/api/auth/verify-email?token=₹ {emailVerificationToken}`;
+  const verificationLink = `https://verdant-plant-selling-app.onrender.com/api/auth/verify-email?token=${emailVerificationToken}`;
   const emailContent = `
     <h2>Welcome to Verdant Store!</h2>
     <p>Click the link below to verify your email:</p>
@@ -97,4 +98,20 @@ const loginCustomer = async ({ email, password }) => {
   return { message: "Login successful!", token, customer };
 };
 
-module.exports = { registerCustomer, verifyCustomerEmail, loginCustomer };
+
+const subscriptionService = async({email})=>{
+  return await prisma.newsletterSubscription.create({
+    data: {
+      email: String(email)
+    },
+  });
+}
+
+
+
+module.exports = {
+  registerCustomer,
+  verifyCustomerEmail,
+  loginCustomer,
+  subscriptionService,
+};

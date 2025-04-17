@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Trash2,
@@ -9,36 +9,38 @@ import {
   Plus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { plants } from "../data/plants";
+import {
+  getAllCartItems,
+  plants,
+  removeFromCart,
+  updateCartItemQuantity,
+  clearCartItems,
+} from "../data/plants";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import { custCartItems  } from "../data/plants";
-
-// Mock cart data
-// export const custCartItems = [
-//   { id: 1, plantId: 1, quantity: 1 },
-//   { id: 2, plantId: 2, quantity: 2 },
-//   { id: 3, plantId: 4, quantity: 1 },
-// ];
-// console.log(plants);
-
 
 const Cart = () => {
-  console.log(custCartItems);
-  
-  const [cartItems, setCartItems] = useState(custCartItems?custCartItems:[]);
+  const user = JSON.parse(localStorage.getItem("user"));
+  // console.log(custCartItems);
 
-  
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      const items = await getAllCartItems();
+      setCartItems(items || []);
+    };
+    fetchCartItems();
+  }, []);
 
   // to get full plant details for cart items
   const cartWithDetails = cartItems.map((item) => {
     console.log(item);
-    
+
     const plant = plants.find((p) => p.id === item.plant.id);
     return { ...item, plant };
   });
   // console.log(cartWithDetails);
-  
 
   // to calculate totals
   const subtotal = cartWithDetails.reduce((acc, item) => {
@@ -49,12 +51,12 @@ const Cart = () => {
   const total = subtotal + shipping;
 
   // to update quantity
-  const updateQuantity = (id, newQuantity) => {
+  const updateQuantity = async (id, newQuantity) => {
     if (newQuantity < 1) return;
 
     const item = cartWithDetails.find((item) => item.id === id);
     if (item && newQuantity > item.plant.stock) {
-      toast(`Sorry, we only have ₹ {item.plant.stock} of this item in stock.`);
+      toast(`Sorry, we only have ${item.plant.stock} of this item in stock.`);
       return;
     }
 
@@ -63,13 +65,33 @@ const Cart = () => {
         item.id === id ? { ...item, quantity: newQuantity } : item
       )
     );
+
+    try {
+      await updateCartItemQuantity({
+        custId: user.id,
+        plantId: item.plant.id,
+        quantity: newQuantity,
+      });
+    } catch (error) {
+      toast("Failed to update quantity. Please try again.");
+      console.error(error);
+    }
   };
 
-  // to remove item from cart
-  const removeItem = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  const removeItem = async (plantId) => {
+    setCartItems((prev) => prev.filter((item) => item.plant.id !== plantId));
+    await removeFromCart({ custId: user.id, plantId });
+    const items = await getAllCartItems();
+    setCartItems(items || []);
     toast("The item has been removed from your cart.");
   };
+
+
+  const handleClearCart = async()=>{
+    await clearCartItems({custId:user.id})
+    toast("Cart cleared succesfully...")
+    setCartItems([])
+  }
 
   //to proceed to checkout
   const checkout = () => {
@@ -202,10 +224,13 @@ const Cart = () => {
                           </span>
                           <button
                             className="text-emerald-600 hover:text-emerald-800"
-                            onClick={() => removeItem(item.id)}
+                            onClick={() => removeItem(item.plant.id)}
                             aria-label="Remove item"
                           >
-                            <Trash2 size={18} />
+                            <Trash2
+                              className="cursor-pointer hover:text-red-500"
+                              size={18}
+                            />
                           </button>
                         </div>
                       </div>
@@ -224,8 +249,8 @@ const Cart = () => {
                 </Link>
                 <Button
                   variant="outline"
-                  className="border-emerald-200 text-emerald-600 hover:bg-emerald-50"
-                  onClick={() => setCartItems([])}
+                  className="border-red-200 text-red-600 hover:bg-red-600 hover:text-white"
+                  onClick={handleClearCart}
                 >
                   Clear Cart
                 </Button>
@@ -247,7 +272,7 @@ const Cart = () => {
                   <div className="flex justify-between text-emerald-700">
                     <span>Shipping</span>
                     <span>
-                      {shipping === 0 ? "Free" : `₹ ₹ {shipping.toFixed(2)}`}
+                      {shipping === 0 ? "Free" : `₹ ${shipping.toFixed(2)}`}
                     </span>
                   </div>
                   <div className="pt-4 border-t border-emerald-100">
