@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const PlantCard = ({ plant }) => {
   return (
-    <div className="plant-card p-2 group shadow-lg bg-white rounded-lg">
+    <div className="plant-card items-center p-2 group shadow-lg bg-white rounded-lg">
       <div className="relative overflow-hidden ">
         <Link to={`/shop/${plant.id}`}>
           <img

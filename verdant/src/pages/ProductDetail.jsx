@@ -82,7 +82,7 @@ const ProductDetail = () => {
       });
       setRating(0);
     } catch (error) {
-      toast.error("Failed to submit review. Please try again.");
+      toast.error("Please log in to submit a review.");
       console.error("Error submitting review:", error);
     }
   };
