@@ -14,7 +14,6 @@ export const getAllPlants = async () => {
   }
 };
 
-export const plants = await getAllPlants();
 
 const allCategories = async () => {
   try {
@@ -30,7 +29,13 @@ const allCategories = async () => {
   }
 };
 
-export const categories = await allCategories();
+export let plants = [];
+export let categories = [];
+
+(async () => {
+  plants = await getAllPlants();
+  categories = await allCategories();
+})();
 
 export const getAllCartItems = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
