@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { plants } from "../data/plants";
+import { addItemToCart, plants } from "../data/plants";
 import {
   Heart,
   Truck,
@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import PlantCard from "../components/PlantCard";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import { custCartItems } from "../data/plants"; 
+import { custCartItems } from "../data/plants";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -30,33 +30,22 @@ const ProductDetail = () => {
     rating: 0,
     date: "",
     comment: "",
-    author: "",
+    reviewerName: "",
   });
-  console.log("reviews ?",plants);
-  
 
-  const [reviews, setReviews] = useState([
-    {
-      rating: 5,
-      date: "1 month ago",
-      comment:
-        "My plant arrived in perfect condition. It's even bigger than I expected and looks so healthy!",
-      author: "Jamie L.",
-    },
-    {
-      rating: 4,
-      date: "2 months ago",
-      comment:
-        "The plant is thriving in my living room. It had a few small brown spots on arrival but nothing major.",
-      author: "Alex T.",
-    },
-    {
-      rating: 5,
-      date: "3 months ago",
-      comment: "I was impressed with how carefully the plant was packaged. Not a single leaf was damaged during shipping.",
-      author: "Morgan W.",
-    },
-  ]);
+  const user = JSON.parse(localStorage.getItem("user"))
+    ? JSON.parse(localStorage.getItem("user"))
+    : "";
+  console.log(user.name);
+
+  console.log(
+    "reviews ?",
+    plants.flatMap((plant) => plant.reviews)
+  );
+
+  const [reviews, setReviews] = useState(
+    plants.flatMap((plant) => plant.reviews)
+  );
   // Mock image gallery - in a real app, each plant would have multiple images
   const mockGallery = [
     plant?.image,
@@ -65,7 +54,6 @@ const ProductDetail = () => {
     "https://images.unsplash.com/photo-1598510495810-84f8ff42719b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
   ];
 
-  // Find plant by ID
   useEffect(() => {
     setLoading(true);
     const foundPlant = plants.find((p) => p.id === parseInt(id));
@@ -75,7 +63,9 @@ const ProductDetail = () => {
       // Find related plants in the same category
       const related = plants
         .filter(
-          (p) => p.category.name === foundPlant.category.name && p.id !== foundPlant.id
+          (p) =>
+            p.category.name === foundPlant.category.name &&
+            p.id !== foundPlant.id
         )
         .slice(0, 4);
       setRelatedPlants(related);
@@ -99,23 +89,27 @@ const ProductDetail = () => {
 
   // { id: 1, plantId: 1, quantity: 1 },
 
-  const addToCart = () => {
+  const addToCart = async () => {
     console.log(plant);
+    if (user) {
+      console.log(user);
 
-    const exists = custCartItems.some(
-      (item) => item.plantId === plant.id || item.quantity === selectedQuantity
-    );
+      const exists = custCartItems?.some(
+        (item) => item.id === plant.id || item.quantity === selectedQuantity
+      );
 
-    if (!exists) {
-      custCartItems.push({
-        id: custCartItems.length + 1,
-        plantId: plant.id,
-        quantity: selectedQuantity,
-      });
+      if (!exists) {
+        await addItemToCart({
+          custId: user.id,
+          plantId: plant.id,
+          quantity: selectedQuantity,
+        });
+      }
+
+      toast(`${selectedQuantity} x ${plant.name} added to your cart.`);
+    } else {
+      toast("Please Login/ Sign up to Add to Cart");
     }
-
-    console.log(initialCartItems);
-    toast(`${selectedQuantity} x ${plant.name} added to your cart.`);
   };
 
   const addToWishlist = () => {
@@ -367,7 +361,7 @@ const ProductDetail = () => {
                   rating: 0,
                   date: "",
                   comment: "",
-                  author: "",
+                  reviewerName: "",
                 });
                 setRating(0);
                 toast("Thanks for your review!");
@@ -390,7 +384,6 @@ const ProductDetail = () => {
                 ))}
               </div>
 
-
               {/* Text input */}
               <textarea
                 placeholder="Write your review..."
@@ -402,15 +395,13 @@ const ProductDetail = () => {
                 }
               />
 
-              {/* Author input */}
+              {/* reviwer input */}
               <input
                 type="text"
                 placeholder="Your name"
                 className="w-full border rounded p-2 mb-4"
-                value={writeReview.author}
-                onChange={(e) =>
-                  setWriteReview({ ...writeReview, author: e.target.value })
-                }
+                value={user.name}
+                readOnly
               />
 
               {/* Submit button */}
@@ -423,7 +414,7 @@ const ProductDetail = () => {
             </form>
           )}
 
-          <div className="space-y-6">
+          <div className="space-y-6  overflow-y-scroll">
             {reviews.map((review, index) => (
               <div
                 key={index}
@@ -434,16 +425,18 @@ const ProductDetail = () => {
                 <div className="flex items-center mb-2">
                   <div className="flex items-center text-stone-500 mr-2">
                     {[1, 2, 3, 4, 5].map((star) => (
-                      <span key={star}>{star <= review.rating ? "★" : "☆"}</span>
+                      <span key={star}>
+                        {star <= review.rating ? "★" : "☆"}
+                      </span>
                     ))}
                   </div>
                   <span className="text-sm text-emerald-600">
                     {review.date}
                   </span>
                 </div>
-                <p className="text-emerald-600 mb-2">{review.text}</p>
+                <p className="text-emerald-600 mb-2">{review.comment}</p>
                 <div className="text-sm text-emerald-700 font-medium">
-                  - {review.author}
+                  - {review.reviewerName}
                 </div>
               </div>
             ))}

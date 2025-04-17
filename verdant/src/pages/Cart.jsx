@@ -26,10 +26,14 @@ import { custCartItems  } from "../data/plants";
 const Cart = () => {
   console.log(custCartItems);
   
-  const [cartItems, setCartItems] = useState(custCartItems);
+  const [cartItems, setCartItems] = useState(custCartItems?custCartItems:[]);
+
+  
 
   // to get full plant details for cart items
   const cartWithDetails = cartItems.map((item) => {
+    console.log(item);
+    
     const plant = plants.find((p) => p.id === item.plant.id);
     return { ...item, plant };
   });
@@ -140,7 +144,7 @@ const Cart = () => {
                         </div>
                         <div>
                           <Link
-                            to={`/shop/₹ {item.plant.id}`}
+                            to={`/shop/${item.plant.id}`}
                             className="font-medium text-emerald-800 hover:text-emerald-600"
                           >
                             {item.plant.name}

@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { useParams } from "react-router-dom";
 
 const Shop = () => {
+  const { category } = useParams();
   const [filteredPlants, setFilteredPlants] = useState(plants);
   const [priceRange, setPriceRange] = useState([0, 50]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -22,10 +24,23 @@ const Shop = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [availablePriceRange, setAvailablePriceRange] = useState([0, 0]); // storing price range
 
+
+  useEffect(() => {
+    if (category) {
+      const decodedCategory = decodeURIComponent(category);
+      setSelectedCategories([decodedCategory]);
+    } else {
+      setSelectedCategories([]); // show all if no category
+    }
+  }, [category]);
+
+
   // Get unique categories, sizes, and light levels
   const allCategories = [
     ...new Set(plants.map((plant) => plant.category.name)),
   ];
+  console.log(allCategories);
+
   const allSizes = [...new Set(plants.map((plant) => plant.size))];
   const allLightLevels = [...new Set(plants.map((plant) => plant.light))];
 

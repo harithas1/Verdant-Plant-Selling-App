@@ -61,7 +61,7 @@ const Home = () => {
             {categories.map((category) => (
               <Link
                 key={category.id}
-                to={`/categories/${category.id}`}
+                to={`/shop/category/${category.name}`}
                 className="block group"
               >
                 <div className="relative overflow-hidden rounded-lg shadow-sm">

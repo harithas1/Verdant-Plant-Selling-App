@@ -10,23 +10,24 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 
 const App = () => (
   <AuthProvider>
-    <BrowserRouter>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/shop/:id" element={<ProductDetail />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/auth" element={<AuthPage />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            {/* <Route path="*" element={<NotFound />} /> */}
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </BrowserRouter>
+      <BrowserRouter>
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/shop/category/:category" element={<Shop />} />
+              <Route path="/shop/:id" element={<ProductDetail />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/auth" element={<AuthPage />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              {/* <Route path="*" element={<NotFound />} /> */}
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </BrowserRouter>
   </AuthProvider>
 );
 

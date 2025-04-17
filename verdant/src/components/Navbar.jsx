@@ -148,7 +148,7 @@ const Navbar = ({ cartItemCount = 0 }) => {
             </Link>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-emerald-700 hover:text-emerald-600 transition-colors"
+              className="text-emerald-700 hover:cursor-pointer hover:text-emerald-600 transition-colors"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
