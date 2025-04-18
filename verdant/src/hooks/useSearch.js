@@ -33,7 +33,7 @@ export const useSearch = () => {
 
     setSearchResults(results);
     setIsSearching(false);
-  }, []);
+  }, [plants]);
 
   return {
     searchResults,

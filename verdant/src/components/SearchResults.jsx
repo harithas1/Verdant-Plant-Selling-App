@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/command";
 
 const SearchResults = ({ results, onSelect }) => {
-  if (results.length === 0) {
-    return null;
-  }
+  // if (results.length === 0) {
+  //   return null;
+  // }
   // console.log(results);
   
 
