@@ -13,7 +13,6 @@ const paymentRoutes = require("./routes/razorpayRotes")
 
 const app = express();
 
-app.use(cors());
 
 // -----------------------------------------------
 app.use(
