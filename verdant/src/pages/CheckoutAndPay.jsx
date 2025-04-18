@@ -16,8 +16,8 @@ const getAllCartItems = async () => {
 
 function CartCheckoutAndPay() {
   const [isLoading, setIsLoading] = useState(false);
-  const [address, setAddress] = useState("");  
-  const [isAddressValid, setIsAddressValid] = useState(true); 
+  const [address, setAddress] = useState("");
+  const [isAddressValid, setIsAddressValid] = useState(true);
 
   const handleCartCheckoutAndPayment = async () => {
     setIsLoading(true);
@@ -39,7 +39,6 @@ function CartCheckoutAndPay() {
     }
 
     try {
-      // Fetching cart items
       const cartItems = await getAllCartItems();
 
       if (cartItems.length === 0) {
@@ -48,35 +47,46 @@ function CartCheckoutAndPay() {
         return;
       }
 
-      // to Calculate total amount
-      const totalAmount = cartItems.reduce((sum, item) => {
-        return sum + item.plant.price * item.quantity;
-      }, 0);
+      let totalAmount = 0;
+      let allOrderIds = [];
 
-      // to Create order in backend
-      const orderResponse = await axios.post('https://verdant-plant-selling-app.onrender.com/orders/create-order', {
-        custId: user.id,
-        cartItems: cartItems.map(item => ({
+      // Create orders one by one for each cart item
+      for (const item of cartItems) {
+        const orderPayload = {
+          custId: user.id,
           plantId: item.plant.id,
-          quantity: item.quantity
-        })),
-        totalAmount: totalAmount,
-        shippingAddress: address // Use user-input address
-      });
+          quantity: item.quantity,
+          totalAmount: item.plant.price * item.quantity,
+          shippingAddress: address
+        };
 
-      if (!orderResponse.data?.success) {
-        alert("Order creation failed.");
-        setIsLoading(false);
-        return;
+        console.log("Creating order with payload:", orderPayload);
+
+        const orderResponse = await axios.post(
+          'https://verdant-plant-selling-app.onrender.com/orders/create-order',
+          orderPayload
+        );
+
+        if (!orderResponse.data?.success) {
+          alert(`Order creation failed for ${item.plant.name}`);
+          setIsLoading(false);
+          return;
+        }
+
+        allOrderIds.push(orderResponse.data.order.id);
+        totalAmount += orderPayload.totalAmount;
       }
 
-      const orderId = orderResponse.data.order.id;
+      console.log("All Orders Created:", allOrderIds);
 
-      // to Create Razorpay payment order
-      const paymentResponse = await axios.post('https://verdant-plant-selling-app.onrender.com/payment/create-order', {
-        orderId: orderId,
-        amount: totalAmount
-      });
+      
+      const paymentResponse = await axios.post(
+        'https://verdant-plant-selling-app.onrender.com/payment/create-order',
+        {
+          orderId: allOrderIds.join(","),  
+          amount: totalAmount
+        }
+      );
 
       if (!paymentResponse.data?.success) {
         alert("Payment initialization failed.");
@@ -86,9 +96,8 @@ function CartCheckoutAndPay() {
 
       const paymentData = paymentResponse.data.order;
 
-      // to Razorpay options
       const options = {
-        key: import.meta.env.RAZOR_PAY_KEY, //  Razorpay test key
+        key: import.meta.env.VITE_RAZOR_PAY_KEY,
         amount: paymentData.amount * 100, // amount in paise
         currency: "INR",
         name: "Verdant",
@@ -97,7 +106,6 @@ function CartCheckoutAndPay() {
         handler: function (response) {
           alert("Payment Successful!");
           console.log("Payment Success:", response);
-          // /payment/verify with this data
         },
         prefill: {
           name: user.name,
@@ -105,7 +113,7 @@ function CartCheckoutAndPay() {
           contact: "9999999999",
         },
         notes: {
-          address: address 
+          address: address
         },
         theme: {
           color: "#10b981"
@@ -129,7 +137,6 @@ function CartCheckoutAndPay() {
         Review Cart & Pay
       </h2>
 
-      {/* Address input */}
       <div className="mb-4">
         <label htmlFor="address" className="block text-sm text-emerald-700 mb-2">Shipping Address</label>
         <textarea
@@ -155,4 +162,3 @@ function CartCheckoutAndPay() {
 }
 
 export default CartCheckoutAndPay;
-
