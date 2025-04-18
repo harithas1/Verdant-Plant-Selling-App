@@ -7,7 +7,7 @@ const getAllCartItems = async () => {
   if (!user) return [];
 
   try {
-    const response = await axios.get(`https://verdant-plant-selling-app.onrender.com/${user.id}`);
+    const response = await axios.get(`https://verdant-plant-selling-app.onrender.com/cart/getCartItems/${user.id}`);
     console.log(response);
     
     return response.data.cartItems || [];
