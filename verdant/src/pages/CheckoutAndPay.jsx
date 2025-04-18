@@ -6,7 +6,9 @@ const getAllCartItems = async () => {
   if (!user) return [];
 
   try {
-    const response = await axios.get(`https://verdant-plant-selling-app.onrender.com/cart/getCartItems/${user.id}`);
+    const response = await axios.get(`https://verdant-plant-selling-app.onrender.com/${user.id}`);
+    console.log(response);
+    
     return response.data.cartItems || [];
   } catch (err) {
     console.error("Error fetching cart items:", err);
@@ -47,35 +49,44 @@ function CartCheckoutAndPay() {
         return;
       }
 
-      const totalAmount = cartItems.reduce((sum, item) => sum + item.plant.price * item.quantity, 0);
+      let totalAmount = 0;
+      let allOrderIds = [];
 
-      // Create a single order with all cart items
-      const orderResponse = await axios.post(
-        'https://verdant-plant-selling-app.onrender.com/orders/create-order',
-        {
+      // Create orders one by one for each cart item
+      for (const item of cartItems) {
+        const orderPayload = {
           custId: user.id,
-          cartItems: cartItems.map(item => ({
-            plantId: item.plant.id,
-            quantity: item.quantity
-          })),
-          totalAmount: totalAmount,
+          plantId: item.plant.id,
+          quantity: item.quantity,
+          totalAmount: item.plant.price * item.quantity,
           shippingAddress: address
-        }
-      );
+        };
 
-      if (!orderResponse.data?.success) {
-        alert("Order creation failed.");
-        setIsLoading(false);
-        return;
+        console.log("Creating order with payload:", orderPayload);
+
+        const orderResponse = await axios.post(
+          'https://verdant-plant-selling-app.onrender.com/orders/create-order',
+          orderPayload
+        );
+
+        if (!orderResponse.data?.success) {
+          alert(`Order creation failed for ${item.plant.name}`);
+          setIsLoading(false);
+          return;
+        }
+
+        allOrderIds.push(orderResponse.data.order.id);
+        totalAmount += orderPayload.totalAmount;
       }
 
-      const orderId = orderResponse.data.order.id;
+      console.log("All Orders Created:", allOrderIds[0]);
+      
 
-      // Create payment order for that single order
+      
       const paymentResponse = await axios.post(
         'https://verdant-plant-selling-app.onrender.com/payment/create-order',
         {
-          orderId: orderId,  // single order ID
+          orderId: allOrderIds[0],  
           amount: totalAmount
         }
       );
@@ -87,9 +98,10 @@ function CartCheckoutAndPay() {
       }
 
       const paymentData = paymentResponse.data.order;
+      // console.log(import.meta.env.VITE_RAZOR_PAY_KEY);
 
       const options = {
-        key: import.meta.env.VITE_RAZOR_PAY_KEY, // your Razorpay test key
+        key: import.meta.env.VITE_RAZOR_PAY_KEY,
         amount: paymentData.amount * 100, // amount in paise
         currency: "INR",
         name: "Verdant",
@@ -98,7 +110,6 @@ function CartCheckoutAndPay() {
         handler: function (response) {
           alert("Payment Successful!");
           console.log("Payment Success:", response);
-          // optionally hit: /payment/verify endpoint
         },
         prefill: {
           name: user.name,
