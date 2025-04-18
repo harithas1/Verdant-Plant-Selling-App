@@ -85,30 +85,44 @@ const Cart = () => {
       console.error(error);
     }
   };
+      
+    const removeItem = async (plantId) => {
+      try {
+        const updatedCartItems = cartItems.filter((item) => item.plant.id !== plantId);
+        setCartItems(updatedCartItems);
 
-  const removeItem = async (plantId) => {
-  setCartItems((prev) => prev.filter((item) => item.plant.id !== plantId));
-  try {
-    await removeFromCart({ custId: user.id, plantId });
-        setTimeout(async () => {
-          const items = await getAllCartItems();
-          setCartItems(items || []);
-        }, 500);
+        await removeFromCart({ custId: user.id, plantId });
+
         toast("The item has been removed from your cart.");
-        } catch (error) {
-          toast("Failed to remove the item. Please try again.");
-          console.error(error);
-          const items = await getAllCartItems();
-          setCartItems(items || []);
-        }
-      };
+      } catch (error) {
+        
+        toast("Failed to remove the item. Please try again.");
+        console.error(error);
+
+        const items = await getAllCartItems();
+        setCartItems(items || []);
+      }
+    };
 
 
-  const handleClearCart = async () => {
-    await clearCartItems({ custId: user.id });
-    toast("Cart cleared succesfully...");
-    setCartItems([]);
-  };
+
+    const handleClearCart = async () => {
+      const loadingToast = toast.loading("Clearing cart...");
+
+      try {
+        await clearCartItems({ custId: user.id });
+
+        await new Promise((resolve) => setTimeout(resolve, 500));  // small buffer
+        const items = await getAllCartItems();
+        setCartItems(items || []);
+
+        toast.success("Cart cleared successfully.", { id: loadingToast });
+      } catch (error) {
+        toast.error("Failed to clear the cart. Please try again.", { id: loadingToast });
+        console.error(error);
+      }
+    };
+
 
   //to proceed to checkout
   const checkout = () => {

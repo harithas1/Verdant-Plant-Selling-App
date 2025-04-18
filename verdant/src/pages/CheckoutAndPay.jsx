@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const getAllCartItems = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -20,6 +21,7 @@ function CartCheckoutAndPay() {
   const [isLoading, setIsLoading] = useState(false);
   const [address, setAddress] = useState("");
   const [isAddressValid, setIsAddressValid] = useState(true);
+  const navigate = useNavigate()
 
   const handleCartCheckoutAndPayment = async () => {
     setIsLoading(true);
@@ -109,12 +111,13 @@ function CartCheckoutAndPay() {
         order_id: paymentData.id,
         handler: function (response) {
           alert("Payment Successful!");
+          navigate("/cart")
           console.log("Payment Success:", response);
         },
         prefill: {
           name: user.name,
           email: user.email || "test@example.com",
-          contact: user.mobile
+          contact: user.phone
         },
         notes: {
           address: address
