@@ -37,8 +37,8 @@ const AuthPage = () => {
 
     try {
       const endpoint = isSignUp
-        ? "http://localhost:3000/api/auth/register"
-        : "http://localhost:3000/api/auth/login";
+        ? "https://verdant-plant-selling-app.onrender.com/api/auth/register"
+        : "https://verdant-plant-selling-app.onrender.com/api/auth/login";
 
       // Setting the payload for both signup and login
       const payload = isSignUp

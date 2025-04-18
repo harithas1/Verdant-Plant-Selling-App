@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Trash2,
   ChevronLeft,
@@ -23,6 +23,7 @@ const Cart = () => {
   const [plants, setPlants] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
   // console.log(custCartItems);
+  const navigate=useNavigate()
 
   const [cartItems, setCartItems] = useState([]);
 
@@ -86,12 +87,22 @@ const Cart = () => {
   };
 
   const removeItem = async (plantId) => {
-    setCartItems((prev) => prev.filter((item) => item.plant.id !== plantId));
+  setCartItems((prev) => prev.filter((item) => item.plant.id !== plantId));
+  try {
     await removeFromCart({ custId: user.id, plantId });
-    const items = await getAllCartItems();
-    setCartItems(items || []);
-    toast("The item has been removed from your cart.");
-  };
+        setTimeout(async () => {
+          const items = await getAllCartItems();
+          setCartItems(items || []);
+        }, 500);
+        toast("The item has been removed from your cart.");
+        } catch (error) {
+          toast("Failed to remove the item. Please try again.");
+          console.error(error);
+          const items = await getAllCartItems();
+          setCartItems(items || []);
+        }
+      };
+
 
   const handleClearCart = async () => {
     await clearCartItems({ custId: user.id });
@@ -102,6 +113,7 @@ const Cart = () => {
   //to proceed to checkout
   const checkout = () => {
     toast("Proceeding to checkout...");
+    navigate("/checkout")
   };
 
   return (

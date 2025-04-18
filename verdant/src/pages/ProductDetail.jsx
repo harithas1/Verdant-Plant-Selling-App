@@ -46,6 +46,8 @@ const ProductDetail = () => {
     custId: user?.id || null,
     plantId: id,
   });
+  const [custCartItems, setCustCartItems] = useState([]);
+  const [reviews, setReviews] = useState([]);
 
 
     useEffect(()=>{
@@ -98,8 +100,7 @@ const ProductDetail = () => {
     }
   };
 
-  const [custCartItems, setCustCartItems] = useState([]);
-  const [reviews, setReviews] = useState([]);
+
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -162,10 +163,13 @@ const ProductDetail = () => {
     if (user) {
       console.log(user);
 
-      const exists = custCartItems?.some(
-        (item) => item.id === plant.id || item.quantity === selectedQuantity
+     const exists = custCartItems.some(
+        (item) => item.plantId === plant.id
       );
 
+
+      // console.log(selectedQuantity);
+      
       if (!exists) {
         await addItemToCart({
           custId: user.id,

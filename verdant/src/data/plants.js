@@ -3,7 +3,7 @@ import axios from "axios";
 export const getAllPlants = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:3000/plants/getAllPlants"
+      "https://verdant-plant-selling-app.onrender.com/plants/getAllPlants"
     );
     console.log(response.data.data);
 
@@ -17,7 +17,7 @@ export const getAllPlants = async () => {
 export const allCategories = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:3000/category/getAllCategories"
+      "https://verdant-plant-selling-app.onrender.com/category/getAllCategories"
     );
     console.log(response.data);
 
@@ -38,7 +38,7 @@ export const getAllCartItems = async () => {
   if (user) {
     try {
       const response = await axios.get(
-        ` http://localhost:3000/cart/getCartItems/${user.id}`
+        ` https://verdant-plant-selling-app.onrender.com/cart/getCartItems/${user.id}`
       );
       console.log(response.data.cartItems);
 
@@ -53,7 +53,7 @@ export const getAllCartItems = async () => {
 export const addItemToCart = async ({ custId, plantId, quantity }) => {
   console.log("Adding to cart", custId, plantId, quantity);
   axios
-    .post("http://localhost:3000/cart/addToCart", {
+    .post("https://verdant-plant-selling-app.onrender.com/cart/addToCart", {
       custId,
       plantId,
       quantity,
@@ -71,7 +71,7 @@ export const removeFromCart = async ({ custId, plantId }) => {
   console.log("removing...", custId, plantId);
 
   axios
-    .delete("http://localhost:3000/cart/removeCartItem", {
+    .delete("https://verdant-plant-selling-app.onrender.com/cart/removeCartItem", {
       data: { custId, plantId },
     })
     .then((response) => {
@@ -84,7 +84,7 @@ export const removeFromCart = async ({ custId, plantId }) => {
 
 export const updateCartItemQuantity = async ({ custId, plantId, quantity }) => {
   axios
-    .put("http://localhost:3000/cart/updateCartQuantity", {
+    .put("https://verdant-plant-selling-app.onrender.com/cart/updateCartQuantity", {
       custId,
       plantId,
       quantity,
@@ -101,7 +101,7 @@ export const clearCartItems = async ({ custId }) => {
   console.log("clearing cart...", custId);
 
   axios
-    .delete("http://localhost:3000/cart/clearCart", {
+    .delete("https://verdant-plant-selling-app.onrender.com/cart/clearCart", {
       data: { custId },
     })
     .then((response) => {
@@ -124,7 +124,7 @@ export const addProductReview = async (
 
   try {
     const response = await axios.post(
-      "http://localhost:3000/reviews/addReview",
+      "https://verdant-plant-selling-app.onrender.com/reviews/addReview",
       {
         custId: Number(custId),
         plantId: Number(plantId),
@@ -146,7 +146,7 @@ export const addProductReview = async (
 export const getPlantReviews = async ({ plantId }) => {
   try {
     const response = await axios.get(
-      `http://localhost:3000/reviews/getReviews/${plantId}`
+      `https://verdant-plant-selling-app.onrender.com/reviews/getReviews/${plantId}`
     );
     console.log(response);
 
@@ -162,7 +162,7 @@ export const newsletterSubsription = async ({ email }) => {
 
   try {
     const response = await axios.post(
-      "http://localhost:3000/api/auth/subscribe",
+      "https://verdant-plant-selling-app.onrender.com/api/auth/subscribe",
       { email }
     );
     console.log(response);
