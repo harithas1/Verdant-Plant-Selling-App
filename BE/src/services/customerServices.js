@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const prisma = require("../prisma/prismaClient");
 const sendEmail = require("../utils/mailer");
-const { string } = require("joi");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
