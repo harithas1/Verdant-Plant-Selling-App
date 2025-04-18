@@ -114,7 +114,7 @@ function CartCheckoutAndPay() {
         prefill: {
           name: user.name,
           email: user.email || "test@example.com",
-          contact: "9999999999",
+          contact: user.mobile
         },
         notes: {
           address: address
