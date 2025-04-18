@@ -172,10 +172,12 @@ const Navbar = ({ cartItemCount = 0 }) => {
               >
                 <Search size={20} />
               </button>
-              <SearchResults
-                results={searchResults}
-                onSelect={handleSearchClose}
-              />
+               {searchResults.length > 0 && (
+                <SearchResults
+                  results={searchResults}
+                  onSelect={handleSearchClose}
+                />
+              )}
             </div>
           </div>
         )}
