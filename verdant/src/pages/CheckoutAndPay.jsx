@@ -47,43 +47,35 @@ function CartCheckoutAndPay() {
         return;
       }
 
-      let totalAmount = 0;
-      let allOrderIds = [];
+      const totalAmount = cartItems.reduce((sum, item) => sum + item.plant.price * item.quantity, 0);
 
-      // Create orders one by one for each cart item
-      for (const item of cartItems) {
-        const orderPayload = {
+      // Create a single order with all cart items
+      const orderResponse = await axios.post(
+        'https://verdant-plant-selling-app.onrender.com/orders/create-order',
+        {
           custId: user.id,
-          plantId: item.plant.id,
-          quantity: item.quantity,
-          totalAmount: item.plant.price * item.quantity,
+          cartItems: cartItems.map(item => ({
+            plantId: item.plant.id,
+            quantity: item.quantity
+          })),
+          totalAmount: totalAmount,
           shippingAddress: address
-        };
-
-        console.log("Creating order with payload:", orderPayload);
-
-        const orderResponse = await axios.post(
-          'https://verdant-plant-selling-app.onrender.com/orders/create-order',
-          orderPayload
-        );
-
-        if (!orderResponse.data?.success) {
-          alert(`Order creation failed for ${item.plant.name}`);
-          setIsLoading(false);
-          return;
         }
+      );
 
-        allOrderIds.push(orderResponse.data.order.id);
-        totalAmount += orderPayload.totalAmount;
+      if (!orderResponse.data?.success) {
+        alert("Order creation failed.");
+        setIsLoading(false);
+        return;
       }
 
-      console.log("All Orders Created:", allOrderIds);
+      const orderId = orderResponse.data.order.id;
 
-      
+      // Create payment order for that single order
       const paymentResponse = await axios.post(
         'https://verdant-plant-selling-app.onrender.com/payment/create-order',
         {
-          orderId: allOrderIds,  
+          orderId: orderId,  // single order ID
           amount: totalAmount
         }
       );
@@ -97,7 +89,7 @@ function CartCheckoutAndPay() {
       const paymentData = paymentResponse.data.order;
 
       const options = {
-        key: import.meta.env.VITE_RAZOR_PAY_KEY,
+        key: import.meta.env.VITE_RAZOR_PAY_KEY, // your Razorpay test key
         amount: paymentData.amount * 100, // amount in paise
         currency: "INR",
         name: "Verdant",
@@ -106,6 +98,7 @@ function CartCheckoutAndPay() {
         handler: function (response) {
           alert("Payment Successful!");
           console.log("Payment Success:", response);
+          // optionally hit: /payment/verify endpoint
         },
         prefill: {
           name: user.name,
