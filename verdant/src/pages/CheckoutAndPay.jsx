@@ -90,7 +90,7 @@ function CartCheckoutAndPay() {
 
       // to Razorpay options
       const options = {
-        key: process.env.RAZOR_PAY_KEY, //  Razorpay test key
+        key: import.meta.env.RAZOR_PAY_KEY, //  Razorpay test key
         amount: paymentData.amount * 100, // amount in paise
         currency: "INR",
         name: "Verdant",
