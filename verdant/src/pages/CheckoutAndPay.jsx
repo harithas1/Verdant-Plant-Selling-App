@@ -83,7 +83,7 @@ function CartCheckoutAndPay() {
       const paymentResponse = await axios.post(
         'https://verdant-plant-selling-app.onrender.com/payment/create-order',
         {
-          orderId: allOrderIds.join(","),  
+          orderId: allOrderIds,  
           amount: totalAmount
         }
       );
