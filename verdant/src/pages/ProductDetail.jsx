@@ -3,9 +3,9 @@ import { useParams, Link } from "react-router-dom";
 import {
   addItemToCart,
   getAllCartItems,
-  plants,
   addProductReview,
   getPlantReviews,
+  getAllPlants,
 } from "../data/plants";
 import {
   // Heart,
@@ -29,6 +29,7 @@ const ProductDetail = () => {
   console.log(user.name);
 
   const { id } = useParams();
+  const [allPlants, setAllPlants]= useState([])
   const [plant, setPlant] = useState(null);
   const [relatedPlants, setRelatedPlants] = useState([]);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
@@ -45,6 +46,16 @@ const ProductDetail = () => {
     custId: user?.id || null,
     plantId: id,
   });
+
+
+    useEffect(()=>{
+      const fetchPlants= async () => {
+        const gettingPlants = await getAllPlants()
+        setAllPlants(gettingPlants)
+        console.log(allPlants);
+      }
+      fetchPlants()
+    },[])
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -110,24 +121,25 @@ const ProductDetail = () => {
   // Mock image gallery - in a real app, each plant would have multiple images
   const mockGallery = [plant?.image, plant?.image, plant?.image, plant?.image];
 
-  useEffect(() => {
-    setLoading(true);
-    const foundPlant = plants.find((p) => p.id === parseInt(id));
-    if (foundPlant) {
-      setPlant(foundPlant);
+ useEffect(() => {
+  if (!id || allPlants.length === 0) return;
 
-      // Find related plants in the same category
-      const related = plants
-        .filter(
-          (p) =>
-            p.category.name === foundPlant.category.name &&
-            p.id !== foundPlant.id
-        )
-        .slice(0, 4);
-      setRelatedPlants(related);
-    }
-    setLoading(false);
-  }, [id]);
+  setLoading(true);
+  const foundPlant = allPlants.find((p) => p.id === parseInt(id));
+  if (foundPlant) {
+    setPlant(foundPlant);
+
+    const related = allPlants
+      .filter(
+        (p) =>
+          p.category.name === foundPlant.category.name &&
+          p.id !== foundPlant.id
+      )
+      .slice(0, 4);
+    setRelatedPlants(related);
+  }
+  setLoading(false);
+}, [id, allPlants]);
 
   // Increase quantity
   const incrementQuantity = () => {
@@ -498,7 +510,7 @@ const ProductDetail = () => {
                 View All
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {relatedPlants.map((plant) => (
                 <PlantCard key={plant.id} plant={plant} />
               ))}

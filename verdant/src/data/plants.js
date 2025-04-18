@@ -3,7 +3,7 @@ import axios from "axios";
 export const getAllPlants = async () => {
   try {
     const response = await axios.get(
-      "https://verdant-plant-selling-app.onrender.com/plants/getAllPlants"
+      "http://localhost:3000/plants/getAllPlants"
     );
     console.log(response.data.data);
 
@@ -14,11 +14,10 @@ export const getAllPlants = async () => {
   }
 };
 
-
-const allCategories = async () => {
+export const allCategories = async () => {
   try {
     const response = await axios.get(
-      "https://verdant-plant-selling-app.onrender.com/category/getAllCategories"
+      "http://localhost:3000/category/getAllCategories"
     );
     console.log(response.data);
 
@@ -29,13 +28,8 @@ const allCategories = async () => {
   }
 };
 
-export let plants = [];
-export let categories = [];
-
-(async () => {
-  plants = await getAllPlants();
-  categories = await allCategories();
-})();
+// export const plants = await getAllPlants();
+// export const categories = await allCategories();
 
 export const getAllCartItems = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -44,7 +38,7 @@ export const getAllCartItems = async () => {
   if (user) {
     try {
       const response = await axios.get(
-        ` https://verdant-plant-selling-app.onrender.com/cart/getCartItems/${user.id}`
+        ` http://localhost:3000/cart/getCartItems/${user.id}`
       );
       console.log(response.data.cartItems);
 
@@ -59,7 +53,7 @@ export const getAllCartItems = async () => {
 export const addItemToCart = async ({ custId, plantId, quantity }) => {
   console.log("Adding to cart", custId, plantId, quantity);
   axios
-    .post("https://verdant-plant-selling-app.onrender.com/cart/addToCart", {
+    .post("http://localhost:3000/cart/addToCart", {
       custId,
       plantId,
       quantity,
@@ -77,12 +71,9 @@ export const removeFromCart = async ({ custId, plantId }) => {
   console.log("removing...", custId, plantId);
 
   axios
-    .delete(
-      "https://verdant-plant-selling-app.onrender.com/cart/removeCartItem",
-      {
-        data: { custId, plantId },
-      }
-    )
+    .delete("http://localhost:3000/cart/removeCartItem", {
+      data: { custId, plantId },
+    })
     .then((response) => {
       console.log("Removed from cart:", response.data);
     })
@@ -93,14 +84,11 @@ export const removeFromCart = async ({ custId, plantId }) => {
 
 export const updateCartItemQuantity = async ({ custId, plantId, quantity }) => {
   axios
-    .put(
-      "https://verdant-plant-selling-app.onrender.com/cart/updateCartQuantity",
-      {
-        custId,
-        plantId,
-        quantity,
-      }
-    )
+    .put("http://localhost:3000/cart/updateCartQuantity", {
+      custId,
+      plantId,
+      quantity,
+    })
     .then((response) => {
       console.log("Quantity updated:", response.data);
     })
@@ -113,7 +101,7 @@ export const clearCartItems = async ({ custId }) => {
   console.log("clearing cart...", custId);
 
   axios
-    .delete("https://verdant-plant-selling-app.onrender.com/cart/clearCart", {
+    .delete("http://localhost:3000/cart/clearCart", {
       data: { custId },
     })
     .then((response) => {
@@ -136,7 +124,7 @@ export const addProductReview = async (
 
   try {
     const response = await axios.post(
-      "https://verdant-plant-selling-app.onrender.com/reviews/addReview",
+      "http://localhost:3000/reviews/addReview",
       {
         custId: Number(custId),
         plantId: Number(plantId),
@@ -158,7 +146,7 @@ export const addProductReview = async (
 export const getPlantReviews = async ({ plantId }) => {
   try {
     const response = await axios.get(
-      `https://verdant-plant-selling-app.onrender.com/reviews/getReviews/${plantId}`
+      `http://localhost:3000/reviews/getReviews/${plantId}`
     );
     console.log(response);
 
@@ -174,7 +162,7 @@ export const newsletterSubsription = async ({ email }) => {
 
   try {
     const response = await axios.post(
-      "https://verdant-plant-selling-app.onrender.com/api/auth/subscribe",
+      "http://localhost:3000/api/auth/subscribe",
       { email }
     );
     console.log(response);

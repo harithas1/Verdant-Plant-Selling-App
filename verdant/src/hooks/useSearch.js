@@ -1,9 +1,17 @@
-import { useState, useCallback } from "react";
-import { plants } from "@/data/plants";
+import { useState, useCallback, useEffect } from "react";
+import { getAllPlants } from "@/data/plants";
 
 export const useSearch = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [plants, setPlants]=useState([])
+  useEffect(()=>{
+    const fetchPlants= async()=>{
+      const allPlants= await getAllPlants()
+      setPlants(allPlants)
+    }
+    fetchPlants()
+  },[])
 
   const searchPlants = useCallback((query) => {
     setIsSearching(true);

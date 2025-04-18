@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { plants } from "../data/plants";
+import { getAllPlants } from "../data/plants";
 import PlantCard from "../components/PlantCard";
 import { Slider } from "@/components/ui/slider";
 import { Leaf, ArrowUpDown, Filter } from "lucide-react";
@@ -15,7 +15,8 @@ import { useParams } from "react-router-dom";
 
 const Shop = () => {
   const { category } = useParams();
-  const [filteredPlants, setFilteredPlants] = useState(plants);
+  const [plants,SetPlants]= useState([])
+  const [filteredPlants, setFilteredPlants] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 50]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sizes, setSizes] = useState([]);
@@ -33,6 +34,15 @@ const Shop = () => {
       setSelectedCategories([]); // show all if no category
     }
   }, [category]);
+
+  useEffect(()=>{
+    const fetchPlants= async () => {
+      const allPlants= await getAllPlants()
+      SetPlants(allPlants)
+      console.log(allPlants);
+    }
+    fetchPlants()
+  },[])
 
 
   // Get unique categories, sizes, and light levels
@@ -52,7 +62,7 @@ const Shop = () => {
       setAvailablePriceRange([min, max]);
       setPriceRange([min, max]); // initial filter range equals available
     }
-  }, []);
+  }, [plants]);
 
   // Filter products based on selected filters
   useEffect(() => {

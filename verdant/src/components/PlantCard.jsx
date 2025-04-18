@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 
 const PlantCard = ({ plant }) => {
   return (
-    <div className="plant-card items-center p-2 group shadow-lg bg-white rounded-lg">
-      <div className="relative overflow-hidden ">
+    <div className="bg-white shadow-md rounded-2xl overflow-hidden group flex flex-col justify-between hover:shadow-lg transition-shadow duration-300">
+      <div className="relative">
         <Link to={`/shop/${plant.id}`}>
           <img
             src={plant.image}
             alt={plant.name}
-            className="size-48 place-self-center object-cover bg-no-repeat transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </Link>
         {/* <button
@@ -21,28 +21,28 @@ const PlantCard = ({ plant }) => {
           <Heart size={20} />
         </button> */}
         {plant.stock <= 5 && plant.stock > 0 && (
-          <div className="absolute top-3 left-3 bg-amber-500 text-emerald-800 text-xs font-semibold px-2 py-1 rounded">
+          <div className="absolute top-3 left-3 bg-amber-500 text-emerald-900 text-xs font-bold px-2 py-1 rounded shadow">
             Only {plant.stock} left!
           </div>
         )}
         {plant.stock === 0 && (
-          <div className="absolute top-3 left-3 bg-muted-foreground text-white text-xs font-semibold px-2 py-2 rounded">
+          <div className="absolute top-3 left-3 bg-gray-700 text-white text-xs font-bold px-2 py-1 rounded shadow">
             Sold Out
           </div>
         )}
       </div>
 
-      <div className="p-4 flex flex-col justify-evenly">
+      <div className="p-4 flex flex-col justify-between flex-grow">
         <div className="flex justify-between items-start mb-1">
           <Link to={`/shop/${plant.id}`}>
-            <h3 className="font-medium text-emerald-800 hover:text-emerald-600 transition-colors">
+          <h3 className="font-semibold text-lg text-emerald-800 hover:text-emerald-600 transition-colors line-clamp-2">
               {plant.name}
             </h3>
           </Link>
         </div>
         <div>
-          <p className="text-sm text-emerald-600 ">{plant.category.name}</p>
-          <p className="font-semibold text-sky-600 my-3">
+        <p className="text-sm text-emerald-500 mt-1">{plant.category.name}</p>
+        <p className="font-bold text-sky-600 text-lg my-3">
             ₹ {plant.price.toFixed(2)}
           </p>
         </div>

@@ -38,11 +38,11 @@ const registerCustomer = async ({ name, email, phone, password }) => {
     { expiresIn: "1d" }
   );
 
-  const verificationLink = `https://verdant-plant-selling-app.onrender.com/api/auth/verify-email?token=${emailVerificationToken}`;
+  const verificationLink = `http://localhost:3000/api/auth/verify-email?token=${emailVerificationToken}`;
   const emailContent = `
     <h2>Welcome to Verdant Store!</h2>
     <p>Click the link below to verify your email:</p>
-    <a href="₹ {verificationLink}">Verify Email</a>
+    <a href="${verificationLink}">Verify Email</a>
   `;
 
   await sendEmail(newCustomer.email, "Verify Your Email", emailContent);
@@ -98,16 +98,13 @@ const loginCustomer = async ({ email, password }) => {
   return { message: "Login successful!", token, customer };
 };
 
-
-const subscriptionService = async({email})=>{
+const subscriptionService = async ({ email }) => {
   return await prisma.newsletterSubscription.create({
     data: {
-      email: String(email)
+      email: String(email),
     },
   });
-}
-
-
+};
 
 module.exports = {
   registerCustomer,

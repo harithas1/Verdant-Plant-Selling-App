@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { plants, categories, newsletterSubsription } from "../data/plants";
+import {  newsletterSubsription, getAllPlants, allCategories } from "../data/plants";
 import { ChevronRight, Truck, Droplet, Award, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PlantCard from "@/components/PlantCard";
@@ -8,11 +8,27 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 
 const Home = () => {
-  const allReviews = plants.flatMap((plant) => plant.reviews);
-
+  const [allReviews,setAllReviews] = useState([])
   // Get featured plants
-  const featuredPlants = plants.filter((plant) => plant.featured);
+  const [featuredPlants,setFeaturedPlants] = useState([])
+  const [categories,setCategories]= useState([])
 
+  useEffect(()=>{
+    const fetchData = async () => {
+       const plants = await getAllPlants();
+
+      // Extracting reviews from all plants
+      const reviews = plants.flatMap((plant) => plant.reviews || []);
+      setAllReviews(reviews);
+      console.log("All reviews:", reviews);
+      
+      const featured= plants.filter((plant)=>plant.featured)
+      setFeaturedPlants(featured)
+
+      const cats= await allCategories()
+      setCategories(cats)}
+    fetchData();
+  },[])
 
   const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
@@ -202,7 +218,7 @@ const Home = () => {
             What Our Customers Say
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
             {allReviews.slice(0, 3).map((review, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
                 <div className="flex items-center space-x-1 mb-4 text-amber-500">

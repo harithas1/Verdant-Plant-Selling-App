@@ -11,15 +11,16 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   getAllCartItems,
-  plants,
   removeFromCart,
   updateCartItemQuantity,
   clearCartItems,
+  getAllPlants,
 } from "../data/plants";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 
 const Cart = () => {
+  const [plants, setPlants] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
   // console.log(custCartItems);
 
@@ -29,17 +30,23 @@ const Cart = () => {
     const fetchCartItems = async () => {
       const items = await getAllCartItems();
       setCartItems(items || []);
+      const allPlants = await getAllPlants();
+      setPlants(allPlants);
     };
     fetchCartItems();
   }, []);
 
   // to get full plant details for cart items
-  const cartWithDetails = cartItems.map((item) => {
-    console.log(item);
+  const cartWithDetails = cartItems
+    .map((item) => {
+      console.log(cartItems);
 
-    const plant = plants.find((p) => p.id === item.plant.id);
-    return { ...item, plant };
-  });
+      const plant = plants.find((p) => p.id === item.plant?.id);
+      console.log(plant);
+
+      return plant ? { ...item, plant } : null;
+    })
+    .filter(Boolean);
   // console.log(cartWithDetails);
 
   // to calculate totals
@@ -47,7 +54,7 @@ const Cart = () => {
     return acc + item.plant.price * item.quantity;
   }, 0);
 
-  const shipping = subtotal >= 50 ? 0 : 5.99;
+  const shipping = subtotal >= 500 ? 0 : 50.99;
   const total = subtotal + shipping;
 
   // to update quantity
@@ -86,12 +93,11 @@ const Cart = () => {
     toast("The item has been removed from your cart.");
   };
 
-
-  const handleClearCart = async()=>{
-    await clearCartItems({custId:user.id})
-    toast("Cart cleared succesfully...")
-    setCartItems([])
-  }
+  const handleClearCart = async () => {
+    await clearCartItems({ custId: user.id });
+    toast("Cart cleared succesfully...");
+    setCartItems([]);
+  };
 
   //to proceed to checkout
   const checkout = () => {
@@ -105,7 +111,11 @@ const Cart = () => {
           Your Cart
         </h1>
 
-        {cartItems.length === 0 ? (
+        {!plants.length ? (
+          <div className="p-8 text-center text-emerald-700">
+            Loading your plants...
+          </div>
+        ) : cartItems.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm p-8 text-center">
             <div className="mx-auto w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
               <svg
