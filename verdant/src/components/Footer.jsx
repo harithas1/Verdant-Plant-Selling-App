@@ -11,21 +11,24 @@ const Footer = () => {
 
   const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
-    const email = e.target.elements.email.value;
 
+    const email = e.target.elements.email.value.trim();
     if (!email) {
       toast("Please enter your email.");
       return;
     }
-
     try {
       await newsletterSubsription({ email });
       toast("Thanks for subscribing!");
       e.target.reset();
     } catch (error) {
-      toast("Subscription failed.");
-      console.error(error);
-    }
+        if (error.response?.data?.error === "This email is already subscribed.") {
+          toast("You are already subscribed with this email.");
+        } else {
+          toast("Subscription failed. Please try again later.");
+        }
+        console.error(error);
+      }
   };
 
 
