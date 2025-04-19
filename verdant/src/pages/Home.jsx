@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {  newsletterSubsription, getAllPlants, allCategories } from "../data/plants";
-import { ChevronRight, Truck, Droplet, Award, ShieldCheck } from "lucide-react";
+import { ChevronRight, ChevronLeft, Truck, Droplet, Award, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PlantCard from "@/components/PlantCard";
 import { toast } from "sonner";
