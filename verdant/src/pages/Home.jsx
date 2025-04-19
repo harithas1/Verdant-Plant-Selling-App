@@ -7,6 +7,10 @@ import PlantCard from "@/components/PlantCard";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation,Autoplay } from 'swiper/modules';
+
 
 
 const Home = () => {
