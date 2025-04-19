@@ -52,13 +52,24 @@ const verify_Payment = async (req, res) => {
             return res.status(400).json({ success: false, message: "Payment signature verification failed" });
         }
 
+        // Update payment status to success
         const payment = await prisma.payment.update({
             where: {
-                razorPayOrderId: razorpay_order_id,
+                razorpayOrderId: razorpay_order_id,
             },
             data: {
-                razorPayPaymentId: razorpay_payment_id,
-                status: "success", 
+                razorpayPaymentId: razorpay_payment_id,
+                status: "success",
+            },
+        });
+
+        // Update order status to CONFIRMED
+        await prisma.order.update({
+            where: {
+                id: payment.orderId,  
+            },
+            data: {
+                status: "CONFIRMED",
             },
         });
 

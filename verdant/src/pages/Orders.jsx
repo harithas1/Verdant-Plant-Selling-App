@@ -77,6 +77,22 @@ const Orders = () => {
                   {order.status}
                 </span>
               </p>
+              {order.payment && (
+                <p className="text-sm mt-1">
+                  Payment:{" "}
+                  <span
+                    className={`font-medium ${
+                      order.payment.status === "success"
+                        ? "text-green-600"
+                        : order.payment.status === "failed"
+                        ? "text-red-500"
+                        : "text-yellow-500"
+                    }`}
+                  >
+                    {order.payment.status === "success" ? "Paid" : "Not Paid"}
+                  </span>
+                </p>
+              )}
               <p className="text-xs text-gray-500 mt-1">
                 Ordered on: {new Date(order.createdAt).toLocaleDateString()}
               </p>

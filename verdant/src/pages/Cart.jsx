@@ -146,8 +146,8 @@ const Cart = () => {
             <div className="mx-auto w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
+                width="auto"
+                height="auto"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"

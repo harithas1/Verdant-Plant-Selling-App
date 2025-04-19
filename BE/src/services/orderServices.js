@@ -2,6 +2,17 @@ const prisma = require("../prisma/prismaClient")
 
 const createOrder = async ({ custId, plantId, quantity, totalAmount, shippingAddress }) => {
     try {
+        const plant = await prisma.plant.findUnique({
+            where: { id: plantId }
+        });
+
+        if (!plant) {
+            throw new Error("Plant not found");
+        }
+
+        if (plant.stock < quantity) {
+            throw new Error(`Not enough stock! Available: ${plant.stock}`);
+        }
         const order = await prisma.order.create({
             data: {
                 custId,
@@ -26,7 +37,8 @@ const getAllOrders = async (custId) => {
                 custId,
             },
             include: {
-                plant: true 
+                plant: true,
+                payment: true
             },
             orderBy: {
                 createdAt: 'desc'  

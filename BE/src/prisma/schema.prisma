@@ -160,6 +160,7 @@ enum Size {
 
 enum OrderStatus {
   PENDING
+  CONFIRMED
   SHIPPED
   DELIVERED
   CANCELLED

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const getAllCartItems = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -29,7 +30,7 @@ function CartCheckoutAndPay() {
     const user = JSON.parse(localStorage.getItem("user"));
 
     if (!user) {
-      alert("Please log in to continue.");
+      toast("Please log in to continue.");
       setIsLoading(false);
       return;
     }
@@ -46,7 +47,7 @@ function CartCheckoutAndPay() {
       const cartItems = await getAllCartItems();
 
       if (cartItems.length === 0) {
-        alert("Your cart is empty!");
+        toast("Your cart is empty!");
         setIsLoading(false);
         return;
       }
@@ -72,7 +73,7 @@ function CartCheckoutAndPay() {
         );
 
         if (!orderResponse.data?.success) {
-          alert(`Order creation failed for ${item.plant.name}`);
+          toast(`Order creation failed for ${item.plant.name}`);
           setIsLoading(false);
           return;
         }
@@ -83,7 +84,7 @@ function CartCheckoutAndPay() {
 
       console.log("All Orders Created:", allOrderIds[0]);
       
-
+      toast(`Orders created! Status: PENDING\nTotal Orders: ${allOrderIds.length}\nProceeding to Payment...`)
       
       const paymentResponse = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/payment/create-order`,
@@ -94,7 +95,7 @@ function CartCheckoutAndPay() {
       );
 
       if (!paymentResponse.data?.success) {
-        alert("Payment initialization failed.");
+        toast("Payment initialization failed.Please try again.");
         setIsLoading(false);
         return;
       }
@@ -109,11 +110,29 @@ function CartCheckoutAndPay() {
         name: "Verdant",
         description: "Order Payment",
         order_id: paymentData.id,
-        handler: function (response) {
-          alert("Payment Successful!");
-          navigate("/cart")
-          console.log("Payment Success:", response);
-        },
+        handler: async function (response) {
+        try {
+          const verifyResponse = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/payment/verify-payment`,
+            {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            }
+          );
+
+          if (verifyResponse.data.success) {
+            toast("Payment verified & Order Confirmed!");
+            navigate("/orders/get");  
+
+          } else {
+            toast("⚠️ Payment verification failed, contact support.");
+          }
+        } catch (err) {
+          console.error("Verification error:", err);
+          toast("⚠️ Error during payment verification.");
+        }
+      },
         prefill: {
           name: user.name,
           email: user.email || "test@example.com",
@@ -132,7 +151,7 @@ function CartCheckoutAndPay() {
 
     } catch (err) {
       console.error("Checkout Error:", err);
-      alert("Something went wrong! Please try again.");
+      toast("Something went wrong! Please try again.");
     }
 
     setIsLoading(false);
