@@ -7,7 +7,7 @@ const getAllCartItems = async () => {
   if (!user) return [];
 
   try {
-    const response = await axios.get(`https://verdant-plant-selling-app.onrender.com/cart/getCartItems/${user.id}`);
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/cart/getCartItems/${user.id}`);
     console.log(response);
     
     return response.data.cartItems || [];
@@ -67,7 +67,7 @@ function CartCheckoutAndPay() {
         console.log("Creating order with payload:", orderPayload);
 
         const orderResponse = await axios.post(
-          'https://verdant-plant-selling-app.onrender.com/orders/create-order',
+          `${import.meta.env.VITE_BACKEND_URL}/orders/create-order`,
           orderPayload
         );
 
@@ -86,7 +86,7 @@ function CartCheckoutAndPay() {
 
       
       const paymentResponse = await axios.post(
-        'https://verdant-plant-selling-app.onrender.com/payment/create-order',
+        `${import.meta.env.VITE_BACKEND_URL}/payment/create-order`,
         {
           orderId: allOrderIds[0],  
           amount: totalAmount

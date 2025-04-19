@@ -13,7 +13,7 @@ const Orders = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `https://verdant-plant-selling-app.onrender.com/orders/get/${custId}`
+          `${import.meta.env.VITE_BACKEND_URL}/orders/get/${custId}`
         );
         console.log(response.data);
         setOrders(response.data.orders);

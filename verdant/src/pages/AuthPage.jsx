@@ -37,8 +37,8 @@ const AuthPage = () => {
 
     try {
       const endpoint = isSignUp
-        ? "https://verdant-plant-selling-app.onrender.com/api/auth/register"
-        : "https://verdant-plant-selling-app.onrender.com/api/auth/login";
+        ? `${import.meta.env.VITE_BACKEND_URL}/api/auth/register`
+        : `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`;
 
       // Setting the payload for both signup and login
       const payload = isSignUp
