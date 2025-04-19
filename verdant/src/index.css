@@ -119,3 +119,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: white !important; /* Force white color */
+  /* background-color: rgba(0, 0, 0, 0.5); Background color of the arrows */
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  color: #08ab69 !important; /* Emerald green color on hover */
+}

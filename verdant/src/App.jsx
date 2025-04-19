@@ -9,6 +9,7 @@ import AuthPage from "./pages/AuthPage";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { useEffect } from "react";
 import CheckoutAndPay from "./pages/CheckoutAndPay";
+import Orders from "./pages/Orders";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/cart" element={<Cart />} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/checkout" element={<CheckoutAndPay />} />
+              <Route path="/orders/get" element={<Orders />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               {/* <Route path="*" element={<NotFound />} /> */}
             </Routes>

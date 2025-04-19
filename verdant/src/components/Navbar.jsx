@@ -48,12 +48,12 @@ const Navbar = ({ cartItemCount = 0 }) => {
             >
               Shop
             </Link>
-            <Link
-              to="/categories"
+            <a
+              href="#shop-by-categories"
               className="text-emerald-700 hover:text-emerald-600 transition-colors"
             >
               Categories
-            </Link>
+            </a>
             <Link
               to="/care-guides"
               className="text-emerald-700 hover:text-emerald-600 transition-colors"
@@ -65,6 +65,12 @@ const Navbar = ({ cartItemCount = 0 }) => {
               className="text-emerald-700 hover:text-emerald-600 transition-colors"
             >
               About
+            </Link>
+              <Link
+              to="/orders/get"
+              className="text-emerald-700 hover:text-emerald-600 transition-colors"
+            >
+              Orders
             </Link>
           </nav>
           {/* Search and Cart */}
@@ -202,13 +208,13 @@ const Navbar = ({ cartItemCount = 0 }) => {
               >
                 Shop
               </Link>
-              <Link
-                to="/categories"
+              <a
+                href="#shop-by-categories"
                 className="text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Categories
-              </Link>
+              </a>
               <Link
                 to="/care-guides"
                 className="text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
@@ -222,6 +228,13 @@ const Navbar = ({ cartItemCount = 0 }) => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
+              </Link>
+              <Link
+                to="/orders/get"
+                className="text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Orders
               </Link>
               <div className="pt-2 border-t border-emerald-100">
                 {user ? (

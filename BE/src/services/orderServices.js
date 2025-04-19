@@ -25,6 +25,12 @@ const getAllOrders = async (custId) => {
             where: {
                 custId,
             },
+            include: {
+                plant: true 
+            },
+            orderBy: {
+                createdAt: 'desc'  
+            }
         });
         return orders;
     } catch (err) {

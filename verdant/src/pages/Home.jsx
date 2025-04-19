@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import PlantCard from "@/components/PlantCard";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 
 const Home = () => {
   const [allReviews,setAllReviews] = useState([])
@@ -92,65 +94,95 @@ const Home = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="py-16">
+
+      <section className="py-16" id="shop-by-categories">
         <div className="container mx-auto px-4">
-          <h2 className=" text-3xl font-display font-semibold text-emerald-900 mb-6 text-center">
+          <h2 className="text-3xl font-display font-semibold text-emerald-900 mb-6 text-center">
             Shop by Category
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((category) => (
-              <Link
-                key={category.id}
-                to={`/shop/category/${category.name}`}
-                className="block group"
-              >
-                <div className="relative overflow-hidden rounded-lg shadow-sm">
-                  <img
-                    src={category.image}
-                    alt={category.name}
-                    className="h-64 w-full place-self-center object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-emerald-800 to-transparent opacity-70"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                    <h3 className="text-xl font-semibold mb-1">
-                      {category.name}
-                    </h3>
-                    <p className="text-amber-100 text-sm mb-2">
-                      {category.description}
-                    </p>
-                    <span className="inline-flex items-center text-amber-50 text-sm font-medium">
-                      Shop Now <ChevronRight size={16} className="ml-1" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+          <div className="relative">
+            <Swiper
+              modules={[Navigation, Autoplay]}
+              spaceBetween={20}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 4 },
+              }}
+              navigation={{
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+            }}
+              loop={true}
+              autoplay={{
+                delay:3000,
+                disableOnInteraction:false // Allow autoplay even after manual swipe
+              }}
+            >
+              {categories.map((category) => (
+                <SwiperSlide key={category.id}>
+                  <Link to={`/shop/category/${category.name}`} className="block group">
+                    <div className="relative overflow-hidden rounded-lg shadow-sm">
+                      <img
+                        src={category.image}
+                        alt={category.name}
+                        className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-emerald-800 to-transparent opacity-70"></div>
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                        <h3 className="text-xl font-semibold mb-1">
+                          {category.name}
+                        </h3>
+                        <p className="text-amber-100 text-sm mb-2">
+                          {category.description}
+                        </p>
+                        <span className="inline-flex items-center text-amber-50 text-sm font-medium">
+                          Shop Now                     <ChevronRight size={16} className="ml-1 text-emerald-400 hover:text-emerald-600 transition-colors duration-300" />
+
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            <div className="swiper-button-prev absolute left-0 top-1/2 transform -translate-y-1/2 p-2 z-10 cursor-pointer text-white hover:text-emerald-600">
+              <ChevronLeft size={24} />
+            </div>
+            <div className="swiper-button-next absolute right-0 top-1/2 transform -translate-y-1/2 p-2 z-10 cursor-pointer text-white hover:text-emerald-600">
+              <ChevronRight size={24} />
+            </div>
           </div>
+
         </div>
       </section>
 
+
+
       {/* Featured Plants Section */}
-      <section className="py-16 bg-amber-50">
+     <section className="py-16 bg-amber-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-display font-semibold text-emerald-900 mb-6">
+            <h2 className="text-3xl font-display font-semibold text-emerald-900">
               Featured Plants
             </h2>
             <Link
               to="/shop"
-              className="text-emerald-600 hover:text-emerald-700 inline-flex items-center font-medium"
+              className="text-emerald-600 hover:text-emerald-700 inline-flex items-center font-medium transition-colors duration-200"
             >
               View All <ChevronRight size={16} className="ml-1" />
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 overflow-hidden">
-            {featuredPlants.map((plant) => (
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {featuredPlants.slice(0, 4).map((plant) => (
               <PlantCard key={plant.id} plant={plant} />
             ))}
           </div>
         </div>
       </section>
-
+    
       {/* Benefits Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
