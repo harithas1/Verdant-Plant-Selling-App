@@ -1,3 +1,4 @@
+const prisma = require("../prisma/prismaClient");
 const {
   registerCustomer,
   verifyCustomerEmail,
@@ -35,9 +36,16 @@ const login_Customer = async (req, res) => {
 
 const subscription_Controller = async (req, res) => {
   try {
-    const {email} = req.body;
-    const response = await subscriptionService(email);
-    res.status(200).json({ message: "Thank you", response });
+    const { email } = req.body;
+    console.log(email);
+    const existing = await prisma.newsletterSubscription.findUnique({
+      where: { email }
+    });
+    if (existing) {
+      return res.status(400).json({ error: "This email is already subscribed." });
+    }
+    const response = await subscriptionService({ email });
+    res.status(200).json({ message: "Thank you for subscribing!", response });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

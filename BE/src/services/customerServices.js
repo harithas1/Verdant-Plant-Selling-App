@@ -100,7 +100,7 @@ const loginCustomer = async ({ email, password }) => {
 const subscriptionService = async ({ email }) => {
   return await prisma.newsletterSubscription.create({
     data: {
-      email: String(email),
+      email,
     },
   });
 };
