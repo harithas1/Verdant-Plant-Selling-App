@@ -54,18 +54,18 @@ const Navbar = ({ cartItemCount = 0 }) => {
             >
               Categories
             </a>
-            <Link
+            {/* <Link
               to="/care-guides"
               className="text-emerald-700 hover:text-emerald-600 transition-colors"
             >
               Care Guides
-            </Link>
-            <Link
+            </Link> */}
+            {/* <Link
               to="/about"
               className="text-emerald-700 hover:text-emerald-600 transition-colors"
             >
               About
-            </Link>
+            </Link> */}
               <Link
               to="/orders/get"
               className="text-emerald-700 hover:text-emerald-600 transition-colors"
@@ -215,20 +215,20 @@ const Navbar = ({ cartItemCount = 0 }) => {
               >
                 Categories
               </a>
-              <Link
+              {/* <Link
                 to="/care-guides"
                 className="text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Care Guides
-              </Link>
-              <Link
+              </Link> */}
+              {/* <Link
                 to="/about"
                 className="text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
-              </Link>
+              </Link> */}
               <Link
                 to="/orders/get"
                 className="text-emerald-700 hover:text-emerald-600 py-2 px-4 rounded-md hover:bg-amber-100 transition-colors"

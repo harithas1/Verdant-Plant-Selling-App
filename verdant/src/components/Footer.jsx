@@ -48,7 +48,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4 mt-4">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/hari0862?igsh=MW1oMTg4bXFyajdyYw=="
                 className="text-amber-50 hover:text-emerald-300 transition-colors"
                 aria-label="Instagram"
               >
