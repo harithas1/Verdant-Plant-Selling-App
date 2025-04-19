@@ -15,30 +15,30 @@ const app = express();
 
 
 // -----------------------------------------------
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.FRONTEND_URL,
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type"],
+//     credentials: true,
+//   })
+// );
 
-app.use((req, res, next) => {
-  res.header(
-    "Access-Control-Allow-Origin",
-    process.env.FRONTEND_URL
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.header("Access-Control-Allow-Credentials", "true");
+// app.use((req, res, next) => {
+//   res.header(
+//     "Access-Control-Allow-Origin",
+//     process.env.FRONTEND_URL
+//   );
+//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+//   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   res.header("Access-Control-Allow-Credentials", "true");
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
+//   if (req.method === "OPTIONS") {
+//     return res.status(200).end();
+//   }
 
-  next();
-});
+//   next();
+// });
 
 // -----------------------------------------------------------
 
