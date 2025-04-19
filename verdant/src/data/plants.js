@@ -2,6 +2,8 @@ import axios from "axios";
 
 export const getAllPlants = async () => {
   try {
+     console.log(`${import.meta.env.VITE_BACKEND_URL}/plants/getAllPlants`
+);
     const response = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}/plants/getAllPlants`
     );
