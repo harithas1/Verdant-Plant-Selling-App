@@ -37,7 +37,7 @@ const registerCustomer = async ({ name, email, phone, password }) => {
     { expiresIn: "1d" }
   );
 
-  const verificationLink = `${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-email?token=${emailVerificationToken}`;
+  const verificationLink = `https://verdant-plant-selling-app.onrender.com/api/auth/verify-email?token=${emailVerificationToken}`;
   const emailContent = `
     <h2>Welcome to Verdant Store!</h2>
     <p>Click the link below to verify your email:</p>
