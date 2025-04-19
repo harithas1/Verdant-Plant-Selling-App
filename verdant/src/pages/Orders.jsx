@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const custId = JSON.parse(localStorage.getItem("user")).id;
+  const navigate = useNavigate();
+  const custId = JSON.parse(localStorage.getItem("user"))?.id;
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -15,22 +17,28 @@ const Orders = () => {
         );
         console.log(response.data);
         setOrders(response.data.orders);
+        if (response.data.orders.length === 0) {
+          toast.info("You haven’t placed any orders yet. Let’s explore some plants!");
+          setTimeout(() => navigate("/shop"), 3000);
+        }
       } catch (error) {
         console.error("Failed to fetch orders:", error);
+        toast.error("Failed to fetch your orders. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchOrders();
-  }, [custId]);
+    if (custId) {
+      fetchOrders();
+    } else {
+      toast.warning("User not found, please log in again.");
+      navigate("/login");
+    }
+  }, [custId, navigate]);
 
   if (loading) {
     return <div className="text-center mt-10">Loading your orders...</div>;
-  }
-
-  if (orders.length === 0) {
-    return <div className="text-center mt-10">You haven’t placed any orders yet.</div>;
   }
 
   return (
@@ -39,27 +47,20 @@ const Orders = () => {
       <div className="grid gap-6">
         {orders.map((order) => (
           <div key={order.id} className="border rounded-2xl p-4 shadow-sm flex gap-4 items-center">
-            {/* Display Plant Image */}
             <img
               src={order.plant?.image}
               alt={order.plant?.name}
               className="w-24 h-24 rounded-lg object-cover"
             />
-
             <div className="flex-1">
-              {/* Plant Name */}
-               <Link
+              <Link
                 to={`/shop/${order.plant.id}`}
                 className="font-medium text-emerald-800 hover:text-emerald-600"
-                >
+              >
                 {order.plant.name}
-                </Link>
-              
-              {/* Quantity and Total */}
+              </Link>
               <p className="text-sm text-gray-600">Qty: {order.quantity}</p>
               <p className="text-sm text-gray-600">Total: ₹{order.totalAmount}</p>
-
-              {/* Order Status */}
               <p className="text-sm mt-1">
                 Status:{" "}
                 <span
@@ -76,8 +77,6 @@ const Orders = () => {
                   {order.status}
                 </span>
               </p>
-
-              {/* Order Date */}
               <p className="text-xs text-gray-500 mt-1">
                 Ordered on: {new Date(order.createdAt).toLocaleDateString()}
               </p>

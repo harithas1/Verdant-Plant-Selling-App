@@ -355,9 +355,9 @@ const Cart = () => {
           </div>
         )}
       </div>
-      <footer>
+      {/* <footer>
         <Toaster />
-      </footer>
+      </footer> */}
     </div>
   );
 };

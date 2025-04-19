@@ -33,7 +33,7 @@ const getOrdersController = async (req, res) => {
             return res.status(400).json({ success: false, message: "Customer ID is required" });
         }
 
-        const orders = await getAllOrders(custId);
+        const orders = await getAllOrders(Number(custId));
         return res.status(200).json({ success: true, orders });
     } catch (err) {
         console.error("Fetching orders error: ", err);

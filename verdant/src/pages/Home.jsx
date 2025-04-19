@@ -309,9 +309,9 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <footer>
+      {/* <footer>
         <Toaster />
-      </footer>
+      </footer> */}
     </div>
   );
 };

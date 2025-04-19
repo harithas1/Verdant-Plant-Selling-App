@@ -522,9 +522,9 @@ const ProductDetail = () => {
           </div>
         )}
       </div>
-      <footer className="sticky">
+      {/* <footer className="sticky">
         <Toaster />
-      </footer>
+      </footer> */}
     </div>
   );
 };
