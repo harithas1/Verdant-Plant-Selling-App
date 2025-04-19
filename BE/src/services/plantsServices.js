@@ -44,24 +44,24 @@ const addPlantService = async ({
 
 // get all plants
 
-const getAllPlants = async (page, pageSize = 10) => {
+const getAllPlants = async () => {
   console.log("Fetching all plants...");
 
   try {
     const allPlants = await prisma.plant.findMany({
-      skip: (page - 1) * pageSize,
-      take: pageSize,
+      // skip: (page - 1) * pageSize,
+      // take: pageSize,
       include: {
         category: true,
         reviews: true,
       },
     });
     // console.log("heloooooo", JSON.stringify(allPlants, null, 2));
-    const totalPlants = await prisma.plant.count();
+    // const totalPlants = await prisma.plant.count();
 
     return {
       data: allPlants,
-      totalPages: Math.ceil(totalPlants / pageSize),
+      // totalPages: Math.ceil(totalPlants / pageSize),
     };
   } catch (error) {
     console.error("Error fetching plants:", error);

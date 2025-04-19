@@ -12,10 +12,10 @@ const addPlant_Controller = async (req, res) => {
 
 
 const get_AllPlants = async (req, res) => {
-  const { page = 1, pageSize = 10 } = req.query;
+  // const { page = 1, pageSize = 10 } = req.query;
 
   try {
-    const allPlants = await getAllPlants(parseInt(page), parseInt(pageSize));
+    const allPlants = await getAllPlants();
     res.json(allPlants);
   } catch (error) {
     console.error("Error in get_AllPlants Controller:", error);
