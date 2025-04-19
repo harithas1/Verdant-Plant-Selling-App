@@ -22,16 +22,29 @@ const AuthPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{10,}$/;
+    if (!formData.email || !emailRegex.test(formData.email)) {
+    toast.error("Please enter a valid email address.");
+    return;
+    }
 
-    // Validating form data
-    if (
-      !formData.email ||
-      !formData.password ||
-      (isSignUp && (!formData.name || !formData.phone))
-    ) {
-      toast.error("Please fill all required fields.");
+    if (!formData.password || formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
       return;
     }
+
+    if (isSignUp) {
+      if (!formData.name.trim()) {
+        toast.error("Please enter your name.");
+        return;
+      }
+      if (!formData.phone || !phoneRegex.test(formData.phone)) {
+        toast.error("Please enter a valid phone number (at least 10 digits).");
+        return;
+      }
+    }
+
 
     setLoading(true);
 
