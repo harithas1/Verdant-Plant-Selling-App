@@ -29,8 +29,8 @@ const AuthPage = () => {
     return;
     }
 
-    if (!formData.password || formData.password.length < 6) {
-      toast.error("Password must be at least 6 characters long.");
+    if (!formData.password || formData.password.length < 4) {
+      toast.error("Password must be at least 4 characters long.");
       return;
     }
 
