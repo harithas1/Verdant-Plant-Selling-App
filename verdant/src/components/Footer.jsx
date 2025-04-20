@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Instagram, Facebook, Twitter, Mail } from "lucide-react";
 import vf from "../assets/vf.png";
 import { newsletterSubsription } from "@/data/plants";
 import { toast } from "sonner";
 import { Toaster } from "./ui/sonner";
+import axios from "axios";
 
 
 const Footer = () => {
