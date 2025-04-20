@@ -1,6 +1,19 @@
 # Verdant — Plant E-Commerce Web Application
 
-### 1. Overview
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Tech Stack](#tech-stack)
+3. [Project Structure](#project-structure)
+4. [Environment Variables Setup](#environment-variables-setup)
+5. [Netlify Deployment Note](#netlify-deployment-note)
+6. [Razorpay Payment Integration](#razorpay-payment-integration)
+7. [Running the Project Locally](#running-the-project-locally)
+
+
+---
+
+## 1. Overview
 
 Verdant is an online plant store where users can explore, filter, and purchase a wide variety of plants including indoor, outdoor, tropical, air-purifying plants, bonsais, succulents, and flowering plants.
 
@@ -12,19 +25,6 @@ The application supports:
 - Order status tracking.
 - Reviews and ratings for products.
 - Newsletter subscription.
-
----
-
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Tech Stack](#tech-stack)
-3. [Project Structure](#project-structure)
-4. [Environment Variables Setup](#environment-variables-setup)
-5. [Netlify Deployment Note](#netlify-deployment-note)
-6. [Razorpay Payment Integration](#razorpay-payment-integration)
-7. [Running the Project Locally](#running-the-project-locally)
-
 
 ---
 
@@ -121,8 +121,8 @@ cd ../verdant(FE)
 npm run dev
 
 ### 6. Access the Application
-#### Frontend: http://localhost:5173
-#### Backend: http://localhost:3000
+Frontend: http://localhost:5173
+Backend: http://localhost:3000
 
 
 
