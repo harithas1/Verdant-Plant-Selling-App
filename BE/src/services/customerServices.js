@@ -105,24 +105,9 @@ const subscriptionService = async ({ email }) => {
   });
 };
 
-
-
-const visitorsCount = async (req, res) => {
-  try {
-    await prisma.visitor.create({ data: {} });
-    const total = await prisma.visitor.count();
-    res.json({ total });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to track visitor" });
-  }
-};
-
-
 module.exports = {
   registerCustomer,
   verifyCustomerEmail,
   loginCustomer,
   subscriptionService,
-  visitorsCount
 };

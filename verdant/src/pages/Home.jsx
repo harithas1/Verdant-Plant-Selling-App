@@ -171,9 +171,6 @@ const Home = () => {
         </div>
       </section>
 
-
-
-
       {/* Featured Plants Section */}
      <section className="py-16 bg-amber-50">
         <div className="container mx-auto px-4">
