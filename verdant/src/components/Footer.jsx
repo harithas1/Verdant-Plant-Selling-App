@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Instagram, Facebook, Twitter, Mail } from "lucide-react";
 import vf from "../assets/vf.png";
@@ -8,6 +8,7 @@ import { Toaster } from "./ui/sonner";
 
 
 const Footer = () => {
+  const [VisitorsCount, setVisitorsCount]=useState(0)
 
   const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +31,14 @@ const Footer = () => {
         console.error(error);
       }
   };
+
+  useEffect(() => {
+    axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/track-visit`)
+      .then(res => setVisitorsCount(res.data.total))
+      .catch(err => console.error("Visitor tracking failed:", err));
+  }, []);
+
+
 
 
   return (
@@ -254,6 +263,10 @@ const Footer = () => {
             </form>
           </div>
         </div>
+
+        <p className="text-emerald-800 text-center text-sm">
+        {VisitorsCount} people have visited us!
+        </p>
 
         {/* Copyright */}
         <div className="mt-8 text-center md:text-left  text-sm">

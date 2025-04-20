@@ -108,61 +108,66 @@ const Home = () => {
           <h2 className="text-3xl font-display font-semibold text-emerald-900 mb-6 text-center">
             Shop by Category
           </h2>
-          <div className="relative">
-            <Swiper
-              modules={[Navigation, Autoplay]}
-              spaceBetween={20}
-              slidesPerView={1}
-              breakpoints={{
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 4 },
+          {!categories.length ? (
+            <div className="p-8 text-center text-emerald-700">
+              Loading categories...
+            </div>
+          ) : (
+            <div className="relative">
+              <Swiper
+                modules={[Navigation, Autoplay]}
+                spaceBetween={20}
+                slidesPerView={1}
+                breakpoints={{
+                  640: { slidesPerView: 2 },
+                  1024: { slidesPerView: 4 },
+                }}
+                navigation={{
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
               }}
-              navigation={{
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev',
-            }}
-              loop={true}
-              autoplay={{
-                delay:3000,
-                disableOnInteraction:false // Allow autoplay even after manual swipe
-              }}
-            >
-              {categories.map((category) => (
-                <SwiperSlide key={category.id}>
-                  <Link to={`/shop/category/${category.name}`} className="block group">
-                    <div className="relative overflow-hidden rounded-lg shadow-sm">
-                      <img
-                        src={category.image}
-                        alt={category.name}
-                        className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-emerald-800 to-transparent opacity-70"></div>
-                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                        <h3 className="text-xl font-semibold mb-1">
-                          {category.name}
-                        </h3>
-                        <p className="text-amber-100 text-sm mb-2">
-                          {category.description}
-                        </p>
-                        <span className="inline-flex items-center text-amber-50 text-sm font-medium">
-                          Shop Now                     <ChevronRight size={16} className="ml-1 text-emerald-400 hover:text-emerald-600 transition-colors duration-300" />
+                loop={true}
+                autoplay={{
+                  delay:3000,
+                  disableOnInteraction:false // Allow autoplay even after manual swipe
+                }}
+              >
+                {categories.map((category) => (
+                  <SwiperSlide key={category.id}>
+                    <Link to={`/shop/category/${category.name}`} className="block group">
+                      <div className="relative overflow-hidden rounded-lg shadow-sm">
+                        <img
+                          src={category.image}
+                          alt={category.name}
+                          className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-emerald-800 to-transparent opacity-70"></div>
+                        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                          <h3 className="text-xl font-semibold mb-1">
+                            {category.name}
+                          </h3>
+                          <p className="text-amber-100 text-sm mb-2">
+                            {category.description}
+                          </p>
+                          <span className="inline-flex items-center text-amber-50 text-sm font-medium">
+                            Shop Now                     <ChevronRight size={16} className="ml-1 text-emerald-400 hover:text-emerald-600 transition-colors duration-300" />
 
-                        </span>
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+                    </Link>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
 
-            <div className="swiper-button-prev absolute left-0 top-1/2 transform -translate-y-1/2 p-2 z-10 cursor-pointer text-white hover:text-emerald-600">
-              <ChevronLeft size={24} />
+              <div className="swiper-button-prev absolute left-0 top-1/2 transform -translate-y-1/2 p-2 z-10 cursor-pointer text-white hover:text-emerald-600">
+                <ChevronLeft size={24} />
+              </div>
+              <div className="swiper-button-next absolute right-0 top-1/2 transform -translate-y-1/2 p-2 z-10 cursor-pointer text-white hover:text-emerald-600">
+                <ChevronRight size={24} />
+              </div>
             </div>
-            <div className="swiper-button-next absolute right-0 top-1/2 transform -translate-y-1/2 p-2 z-10 cursor-pointer text-white hover:text-emerald-600">
-              <ChevronRight size={24} />
-            </div>
-          </div>
-
+            )}
         </div>
       </section>
 
@@ -182,12 +187,14 @@ const Home = () => {
               View All <ChevronRight size={16} className="ml-1" />
             </Link>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-            {featuredPlants.slice(0, 6).map((plant) => (
+        {!featuredPlants.length ?(
+          <div>Loading Featured Plants...</div>):(
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {featuredPlants.slice(0, 4).map((plant) => (
               <PlantCard key={plant.id} plant={plant} />
             ))}
           </div>
+          )}
         </div>
       </section>
     

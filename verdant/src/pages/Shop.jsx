@@ -345,7 +345,11 @@ const Shop = () => {
             </div>
             {/* Products Grid */}
             {/* grid-cols-1 md:grid-cols-2 lg:grid-cols-4 */}
-            {filteredPlants.length > 0 ? (
+          {!filteredPlants.length  ? (
+            <div className="p-8 text-center text-emerald-700">
+              Loading your plants...
+            </div>): 
+          filteredPlants.length ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 overflow-hidden">
                 {filteredPlants.map((plant) => (
                   <PlantCard key={plant.id} plant={plant} />

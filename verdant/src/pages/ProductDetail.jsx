@@ -372,7 +372,7 @@ const ProductDetail = () => {
                         Free Shipping
                       </h4>
                       <p className="text-xs text-emerald-600">
-                        On orders over $500
+                        On orders over ₹500
                       </p>
                     </div>
                   </div>

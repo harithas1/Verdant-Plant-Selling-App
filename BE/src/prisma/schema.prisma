@@ -152,6 +152,12 @@ model Payment {
   order   Order @relation(fields: [orderId], references: [id])
 }
 
+model Visitor {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+}
+
+
 enum Size {
   SMALL
   MEDIUM
