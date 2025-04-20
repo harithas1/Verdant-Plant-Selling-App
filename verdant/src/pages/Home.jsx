@@ -186,7 +186,8 @@ const Home = () => {
             </Link>
           </div>
         {!featuredPlants.length ?(
-          <div>Loading Featured  Plants...</div>):(
+        <div className="p-8 text-center text-emerald-700">
+        Loading Featured Plants...</div>):(
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {featuredPlants.slice(0, 4).map((plant) => (
               <PlantCard key={plant.id} plant={plant} />
