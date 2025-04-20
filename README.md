@@ -1,6 +1,6 @@
 # Verdant — Plant E-Commerce Web Application
 
-### Overview
+### 1. Overview
 
 Verdant is an online plant store where users can explore, filter, and purchase a wide variety of plants including indoor, outdoor, tropical, air-purifying plants, bonsais, succulents, and flowering plants.
 
@@ -28,7 +28,7 @@ The application supports:
 
 ---
 
-### Tech Stack
+## 2. Tech Stack
 
 - **Frontend**: React.js, TailwindCSS, ShadCN, Vite
 - **Backend**: Node.js, Express, FastAPI
@@ -42,7 +42,7 @@ The application supports:
 
 ---
 
-### Project Structure
+## 3. Project Structure
 
 verdant-project/
 ├── BE/
@@ -51,9 +51,9 @@ verdant-project/
 └── verdant(FE)/
     └── .env                  # Frontend environment variables
     
-## Environment Variables Setup: 
+## 4. Environment Variables Setup: 
 
-### 1. Backend (BE/src/.env)
+## 1. Backend (BE/src/.env)
 
 Create a `.env` file in the `src` folder and add the following:
 
@@ -63,7 +63,7 @@ FRONTEND_URL=http://localhost:5173
 RAZORPAY_KEY_ID=<your-razorpay-key-id>
 RAZORPAY_KEY_SECRET=<your-razorpay-key-secret>
 
-### 2. Frontend (verdant(FE)/.env)
+## 2. Frontend (verdant(FE)/.env)
 Create a .env file in the frontend root directory and add the following:
 
 VITE_RAZOR_PAY_KEY=<your-razorpay-key-id>
@@ -72,7 +72,7 @@ VITE_BACKEND_URL=http://localhost:3000
 > **Note**: All frontend environment variables must be prefixed with `VITE_` to be accessible inside the React application when using Vite.
 
 
-### Netlify Deployment Note
+## 5. Netlify Deployment Note
 
 Before deploying to Netlify:
 
@@ -81,7 +81,7 @@ Add the same environment variables from your .env file (especially VITE_RAZOR_PA
 For more context, refer to: https://stackoverflow.com/questions/67378099/import-meta-env-undefined-on-production-build-vitejs
 
 
-### Razorpay Payment Integration
+## 6. Razorpay Payment Integration
 
 The project uses Razorpay in test mode for payment flow.
   * Orders are created server-side and stored only after payment verification.
@@ -93,34 +93,35 @@ Official Documentation:
   
 ---
 
-### Running the Project Locally
-# 1. Clone the repository
+## 7. Running the Project Locally
+
+### 1. Clone the repository
 git clone https://github.com/harithas1/Verdant-Plant-Selling-App.git
 cd Verdant-Plant-Selling-App
 
-# 2. Configure environment variables
-# Create the .env files in BE/src and verdant(FE) as per the instructions.
+### 2. Configure environment variables
+#### Create the .env files in BE/src and verdant(FE) as per the instructions.
 
-# 3. Install dependencies
-# Backend
+### 3. Install dependencies
+#### Backend
 cd BE
 npm install
 
-# Frontend
+#### Frontend
 cd ../verdant(FE)
 npm install
 
-# 4. Start the backend server
+### 4. Start the backend server
 cd ../BE/src
 npm start (or) node server.js 
 
-# 5. Start the frontend
+### 5. Start the frontend
 cd ../verdant(FE)
 npm run dev
 
-# 6. Access the Application
-# Frontend: http://localhost:5173
-# Backend: http://localhost:3000
+### 6. Access the Application
+#### Frontend: http://localhost:5173
+#### Backend: http://localhost:3000
 
 
 
