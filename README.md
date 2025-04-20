@@ -2,13 +2,13 @@
 
 ## Table of Contents
 
-1. [Overview](##overview)
-2. [Tech Stack](##tech-stack)
-3. [Project Structure](##project-structure)
-4. [Environment Variables Setup](##environment-variables-setup)
-5. [Netlify Deployment Note](##netlify-deployment-note)
-6. [Razorpay Payment Integration](##razorpay-payment-integration)
-7. [Running the Project Locally](##running-the-project-locally)
+1. [Overview](#overview)
+2. [Tech Stack](#tech-stack)
+3. [Project Structure](#project-structure)
+4. [Environment Variables Setup](#environment-variables-setup)
+5. [Netlify Deployment Note](#netlify-deployment-note)
+6. [Razorpay Payment Integration](#razorpay-payment-integration)
+7. [Running the Project Locally](#running-the-project-locally)
 
 
 ---
