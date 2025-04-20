@@ -45,11 +45,10 @@ The application supports:
 ## 3. Project Structure
 
 verdant-project/
-├── BE/
-│   └── src/
-│       └── .env              # Backend environment variables
-└── verdant(FE)/
-    └── .env                  # Frontend environment variables
+├── BE/src/.env  
+|── verdant(FE)/.env
+    
+---
     
 ## 4. Environment Variables Setup: 
 
@@ -71,6 +70,7 @@ VITE_BACKEND_URL=http://localhost:3000
 
 > **Note**: All frontend environment variables must be prefixed with `VITE_` to be accessible inside the React application when using Vite.
 
+---
 
 ## 5. Netlify Deployment Note
 
@@ -80,6 +80,7 @@ Go to Site Settings → Environment Variables in the Netlify dashboard.
 Add the same environment variables from your .env file (especially VITE_RAZOR_PAY_KEY and VITE_BACKEND_URL).
 For more context, refer to: https://stackoverflow.com/questions/67378099/import-meta-env-undefined-on-production-build-vitejs
 
+---
 
 ## 6. Razorpay Payment Integration
 
