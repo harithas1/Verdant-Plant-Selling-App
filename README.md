@@ -13,7 +13,7 @@
 
 ---
 
-## 1. Overview
+## Overview
 
 Verdant is an online plant store where users can explore, filter, and purchase a wide variety of plants including indoor, outdoor, tropical, air-purifying plants, bonsais, succulents, and flowering plants.
 
@@ -28,7 +28,7 @@ The application supports:
 
 ---
 
-## 2. Tech Stack
+## Tech Stack
 
 - **Frontend**: React.js, TailwindCSS, ShadCN, Vite
 - **Backend**: Node.js, Express, FastAPI
@@ -42,7 +42,7 @@ The application supports:
 
 ---
 
-## 3. Project Structure
+## Project Structure
 
 verdant-project/
 
@@ -51,7 +51,7 @@ verdant-project/
     
 ---
     
-## 4. Environment Variables Setup: 
+## Environment Variables Setup: 
 
 ## 1. Backend (BE/src/.env)
 
@@ -73,7 +73,7 @@ VITE_BACKEND_URL=http://localhost:3000
 
 ---
 
-## 5. Netlify Deployment Note
+## Netlify Deployment Note
 
 Before deploying to Netlify:
 
@@ -83,7 +83,7 @@ For more context, refer to: https://stackoverflow.com/questions/67378099/import-
 
 ---
 
-## 6. Razorpay Payment Integration
+## Razorpay Payment Integration
 
 The project uses Razorpay in test mode for payment flow.
   * Orders are created server-side and stored only after payment verification.
@@ -95,7 +95,7 @@ Official Documentation:
   
 ---
 
-## 7. Running the Project Locally
+## Running the Project Locally
 
 ### 1. Clone the repository
 git clone https://github.com/harithas1/Verdant-Plant-Selling-App.git
