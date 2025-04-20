@@ -45,6 +45,7 @@ The application supports:
 ## 3. Project Structure
 
 verdant-project/
+
 ├── BE/src/.env  
 |── verdant(FE)/.env
     
