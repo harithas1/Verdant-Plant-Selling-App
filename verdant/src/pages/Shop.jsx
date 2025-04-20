@@ -17,7 +17,7 @@ const Shop = () => {
   const { category } = useParams();
   const [plants,SetPlants]= useState([])
   const [filteredPlants, setFilteredPlants] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 50]);
+  const [priceRange, setPriceRange] = useState([0, 500]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sizes, setSizes] = useState([]);
   const [lightLevels, setLightLevels] = useState([]);
@@ -214,7 +214,7 @@ const Shop = () => {
                 <AccordionContent>
                   <div className="mt-2 px-1">
                     <Slider
-                      defaultValue={[0, 50]}
+                      defaultValue={[0, 500]}
                       min={availablePriceRange[0]}
                       max={availablePriceRange[1]}
                       step={1}
