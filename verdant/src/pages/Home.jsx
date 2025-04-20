@@ -173,6 +173,7 @@ const Home = () => {
 
 
 
+
       {/* Featured Plants Section */}
      <section className="py-16 bg-amber-50">
         <div className="container mx-auto px-4">
@@ -188,7 +189,7 @@ const Home = () => {
             </Link>
           </div>
         {!featuredPlants.length ?(
-          <div>Loading Featured Plants...</div>):(
+          <div>Loading Featured  Plants...</div>):(
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {featuredPlants.slice(0, 4).map((plant) => (
               <PlantCard key={plant.id} plant={plant} />
